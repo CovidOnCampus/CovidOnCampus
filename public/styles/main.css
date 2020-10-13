@@ -5,6 +5,15 @@ body {
 .navbar {
     background-color: #800000;
     color: white;
+    
+}
+
+.navbar-brand {
+    justify-content: center
+}
+
+.dropdown-menu-right {
+    left: -128px;
 }
 
 .page-container {
