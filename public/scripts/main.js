@@ -7,26 +7,26 @@ rhit.MainPageController = class {
 	constructor() {
 		rhit.fbMainPageManager.beginListening(this.updateView.bind(this));
 
+		this.setUpDropDown();
+		
+	}
+
+	setUpDropDown() {
 		document.querySelector(".homePageBtn").onclick = (event) => {
 			window.location.href = `/`;
 		}
-
 		document.querySelector(".mapPageBtn").onclick = (event) => {
 			window.location.href = `/mapPage.html`;
 		}
-
 		document.querySelector(".monitoringPageBtn").onclick = (event) => {
 			window.location.href = `/monitoringPage.html`;
 		}
-
 		document.querySelector(".loginPageBtn").onclick = (event) => {
 			window.location.href = `/loginPage.html`;
 		}
 	}
 
-	updateView() {
-	
-	}
+	updateView() {}
 }
 
 rhit.FbMainPageManager = class {
