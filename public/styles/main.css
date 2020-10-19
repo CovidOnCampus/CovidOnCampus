@@ -23,26 +23,30 @@ body {
 }
 
 /* Home Page */
+#mainPage {
+    display: grid;
+    justify-content: center;
+}
+
 #mainTitle {
-    font-size: 4em;
+    font-size: 2em;
     text-align: center;
 }
 #shortDescrip {
-    font-size: 2em;
+    font-size: 1em;
     font-weight: 100;
     text-align: center;
 }
-#dailyMonitoring {
-    background-color: #800000;
-    color: white;
-    text-align: center;
-    border-radius: 4px;
-    margin: 10px 0;
-    padding: 1em 1em;
+
+.monitoring-button, .map-button {
+    display: grid;
+    justify-content: center;
 }
-#interactiveMap {
+
+#dailyMonitoring, #interactiveMap {
     background-color: #800000;
     color: white;
+    font-size: 1.25em;
     text-align: center;
     border-radius: 4px;
     margin: 10px 0;
@@ -150,11 +154,35 @@ hr {
     #loginPageTitle {
         font-size: 3em;
     }
+
+    #mainTitle {
+        font-size: 3em;
+    }
+
+    #shortDescrip {
+        font-size: 1.5em;
+    }
+
+    #dailyMonitoring, #interactiveMap {
+        font-size: 2em;
+    }
+
+    #submitLoginInfo {
+        font-size: 2em;
+    }
 }
 
 @media (min-width: 768px) {
     #loginPageTitle {
         font-size: 4em;
+    }
+
+    #mainTitle {
+        font-size: 4em;
+    }
+
+    #shortDescrip {
+        font-size: 2em;
     }
 }
 
