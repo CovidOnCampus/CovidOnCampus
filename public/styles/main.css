@@ -19,3 +19,80 @@ body {
 .page-container {
     margin-top: 75px;
 }
+
+/* Home Page */
+#mainTitle {
+    font-size: 4em;
+    text-align: center;
+}
+#shortDescrip {
+    font-size: 2em;
+    font-weight: 100;
+    text-align: center;
+}
+#dailyMonitoring {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 1em 1em;
+}
+#interactiveMap {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 1em 1em;
+}
+/* Monitoring Page */
+#title {
+    font-size: 4em;
+    font-weight: bold;
+    text-align: center;
+}
+.button-group > button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+.button-group {
+    text-align: center;
+    /* border: gray solid 5px; */
+    padding: 5vw;
+}
+.button-group-two > button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+.button-group-two {
+    text-align: center;
+    /* border: gray solid 5px; */
+    padding: 5vw;
+}
+#reportData {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 1em 1em;
+}
+#recentData {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 1em 1em;
+}
+#personalPastReports {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 1em 1em;
+}
