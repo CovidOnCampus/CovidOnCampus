@@ -1,36 +1,64 @@
-/**
- * @fileoverview
- * Provides the JavaScript interactions for all pages.
- *
- * @author 
- * PUT_YOUR_NAME_HERE
- */
-
-/** namespace. */
 var rhit = rhit || {};
 
-/** globals */
-rhit.variableName = "";
+rhit.fbMainPageManager = null;
 
-/** function and class syntax examples */
-rhit.functionName = function () {
-	/** function body */
-};
 
-rhit.ClassName = class {
+rhit.MainPageController = class {
 	constructor() {
+		rhit.fbMainPageManager.beginListening(this.updateView.bind(this));
 
+		this.setUpDropDown();
+		
 	}
 
-	methodName() {
+	setUpDropDown() {
+		document.querySelector(".homePageBtn").onclick = (event) => {
+			window.location.href = `/`;
+		}
+		document.querySelector(".mapPageBtn").onclick = (event) => {
+			window.location.href = `/mapPage.html`;
+		}
+		document.querySelector(".monitoringPageBtn").onclick = (event) => {
+			window.location.href = `/monitoringPage.html`;
+		}
+		document.querySelector(".loginPageBtn").onclick = (event) => {
+			window.location.href = `/loginPage.html`;
+		}
+	}
 
+	updateView() {}
+}
+
+rhit.FbMainPageManager = class {
+	constructor() {
+		console.log("created FbMainPageManager");
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
 	}
 }
 
-/* Main */
-/** function and class syntax examples */
 rhit.main = function () {
 	console.log("Ready");
+
+	rhit.fbMainPageManager = new rhit.FbMainPageManager();
+	new rhit.MainPageController();
+
+	// if (document.querySelector("#mainPage")) {
+	// 	rhit.fbMainPageManager = new rhit.FbMainPageManager();
+	// 	new rhit.MainPageController();
+	// }
 };
 
 rhit.main();

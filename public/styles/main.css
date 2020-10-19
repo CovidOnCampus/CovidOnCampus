@@ -1,3 +1,5 @@
+/* General CSS from template */
+
 body {
     background: #DDDDDD;
 }
@@ -46,6 +48,7 @@ body {
     margin: 10px 0;
     padding: 1em 1em;
 }
+
 /* Monitoring Page */
 #title {
     font-size: 4em;
@@ -96,3 +99,62 @@ body {
     margin: 10px 0;
     padding: 1em 1em;
 }
+
+/* Should work for all forms with this class */
+.custom-file-control, .form-control, 
+.is-focused .custom-file-control, 
+.is-focused .form-control {
+    background-image: linear-gradient(0deg,#800000 2px,rgba(0,150,136,0) 0),linear-gradient(0deg,rgba(0,0,0,.26) 1px,transparent 0);
+}
+
+.btn, 
+.is-focused .bmd-label-floating{
+    color: #800000;
+}
+
+/* Login Page Related */
+
+#loginPage {
+    display: grid;
+    justify-content: center;
+}
+
+#loginPageTitle {
+    color: #800000;
+    font-size: 2em;
+    font-weight: 500;
+    text-align: center;
+}
+
+hr {
+    border-top-width: 2px;
+}
+
+#submitLoginInfo {
+    font-size: 1.25em;
+    padding: 5px 10px;
+}
+
+.roseColorScheme {
+    background: #800000;
+    color: white;
+}
+
+
+
+
+
+
+
+@media (min-width: 576px) {
+    #loginPageTitle {
+        font-size: 3em;
+    }
+}
+
+@media (min-width: 768px) {
+    #loginPageTitle {
+        font-size: 4em;
+    }
+}
+
