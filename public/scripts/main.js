@@ -1,10 +1,19 @@
 var rhit = rhit || {};
 
 rhit.fbMainPageManager = null;
+rhit.fbMapPageManager = null;
+rhit.fbMonitoringPageManager = null;
 
 rhit.MainPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
+
+		document.querySelector("#interactiveMap").onclick = (event) => {
+			window.location.href = `/mapPage.html`;
+		}
+		document.querySelector("#dailyMonitoring").onclick = (event) => {
+			window.location.href = `/monitoringPage.html`;
+		}
 		rhit.fbMainPageManager.beginListening(this.updateView.bind(this));
 	}
 
@@ -13,6 +22,7 @@ rhit.MainPageController = class {
 
 rhit.FbMainPageManager = class {
 	constructor(uid) {
+		console.log("Main Page");
 		this._uid = uid;
 	  	this._documentSnapshots = [];
 		this._unsubscribe = null;
@@ -30,6 +40,69 @@ rhit.FbMainPageManager = class {
 		return this._documentSnapshots.length;
 	}
 };
+
+
+rhit.MapPageController = class {
+	constructor(uid) {
+		rhit.setUpDropDown();
+		rhit.fbMapPageManager.beginListening(this.updateView.bind(this));
+	}
+
+	updateView() {}
+};
+
+rhit.FbMapPageManager = class {
+	constructor(uid) {
+		console.log("Map Page");
+		this._uid = uid;
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
+};
+
+
+rhit.MonitoringPageController = class {
+	constructor(uid) {
+		rhit.setUpDropDown();
+		rhit.fbMonitoringPageManager.beginListening(this.updateView.bind(this));
+	}
+
+	updateView() {}
+};
+
+rhit.FbMonitoringPageManager = class {
+	constructor(uid) {
+		console.log("Monitoring Page");
+		this._uid = uid;
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
+};
+
 
 rhit.LoginPageController = class {
 	constructor() {
@@ -103,20 +176,26 @@ rhit.checkForRedirects = function() {
 
 rhit.initializePage = function() {
 	const urlParams = new URLSearchParams(window.location.search);
+	const uid = urlParams.get("uid");
 
-	// if (document.querySelector("#mainPage")) {
-	// 	const uid = urlParams.get("uid");
-	// 	rhit.fbMainPageManager = new rhit.FbMainPageManager(uid);
-	// 	new rhit.MainPageController();
-	// }
+	if (document.querySelector("#mainPage")) {
+		rhit.fbMainPageManager = new rhit.FbMainPageManager(uid);
+		new rhit.MainPageController();
+	}
+
+	if (document.querySelector("#mapPage")) {
+		rhit.fbMapPageManager = new rhit.FbMapPageManager(uid);
+		new rhit.MapPageController();
+	}
+
+	if (document.querySelector("#monitoringPage")) {
+		rhit.fbMonitoringPageManager = new rhit.FbMonitoringPageManager(uid);
+		new rhit.MonitoringPageController();
+	}
 
 	if (document.querySelector("#loginPage")) {
 		new rhit.LoginPageController();
-	}
-
-	const uid = urlParams.get("uid");
-	rhit.fbMainPageManager = new rhit.FbMainPageManager(uid);
-	new rhit.MainPageController();
+	} 
 };
 
 rhit.setUpDropDown = function() {
