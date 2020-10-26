@@ -22,6 +22,18 @@ body {
     margin-top: 75px;
 }
 
+/* Should work for all forms with this class */
+.custom-file-control, .form-control, 
+.is-focused .custom-file-control, 
+.is-focused .form-control {
+    background-image: linear-gradient(0deg,#800000 2px,rgba(0,150,136,0) 0),linear-gradient(0deg,rgba(0,0,0,.26) 1px,transparent 0);
+}
+
+.btn, 
+.is-focused .bmd-label-floating{
+    color: #800000;
+}
+
 /* Home Page */
 #mainPage {
     display: grid;
@@ -104,17 +116,6 @@ body {
     padding: 1em 1em;
 }
 
-/* Should work for all forms with this class */
-.custom-file-control, .form-control, 
-.is-focused .custom-file-control, 
-.is-focused .form-control {
-    background-image: linear-gradient(0deg,#800000 2px,rgba(0,150,136,0) 0),linear-gradient(0deg,rgba(0,0,0,.26) 1px,transparent 0);
-}
-
-.btn, 
-.is-focused .bmd-label-floating{
-    color: #800000;
-}
 
 /* Login Page Related */
 
@@ -134,9 +135,10 @@ hr {
     border-top-width: 2px;
 }
 
-#submitLoginInfo {
+#roseFireButton {
     font-size: 1.25em;
-    padding: 5px 10px;
+    padding: 10px 15px;
+    margin-top: 2em;
 }
 
 .roseColorScheme {
