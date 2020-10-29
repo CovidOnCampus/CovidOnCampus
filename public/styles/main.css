@@ -141,24 +141,44 @@ hr {
     margin-top: 2em;
 }
 
-.roseColorScheme {
-    background: #800000;
-    color: white;
-}
-
 
 /* Map Page Related */
 
 #map {
     width: 75vw;
     height: 60vh;
+    /* border: black 2px solid; */
+    box-shadow: 0 2px 4px rgba(34, 25, 25, 0.4);
+}
+
+#mapTitle {
+    font-size: 2em;
+    font-weight: 500;
+    text-align: center;
+}
+
+#selectingButtons {
+    display: flex;
+    justify-content: center;
+}
+
+#selectingButtons button {
+    margin: 5px 5px 15px;
+}
+
+#mapPage {
+    display: grid;
+    justify-content: center;
 }
 
 
 
 
 
-
+.roseColorScheme {
+    background: #800000;
+    color: white;
+}
 
 @media (min-width: 576px) {
     #loginPageTitle {
