@@ -172,6 +172,22 @@ hr {
 }
 
 
+/* Reviews */
+.card-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-title {
+    font-size: 1.25em;
+    margin: 0px 10px;
+}
+
+.card-rating {
+    margin-left: 5px;
+}
+
+
 
 
 

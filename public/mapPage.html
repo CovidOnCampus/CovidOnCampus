@@ -40,18 +40,41 @@
       <button id="dropOffButton" type="button" class="btn roseColorScheme">Test Drop-off</button>
     </div>
     <div id="map"></div>
-      <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoianVyZ2Vua3IiLCJhIjoiY2tmdm1sNzdoMGFraDJwazBxeWpkZnBrOCJ9.dQrct7WODcutN-X2IZKXGg';
-        const bounds = [[-87.333, 39.48], [-87.32, 39.4865]]
-        var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-87.3240, 39.4828],
-        zoom: 15,
-        maxBounds: bounds
-        });
+    <button id="testingReviews" type="button" class="btn roseColorScheme" data-toggle="modal" data-target="#testReviewDialog">Testing the Reviews</button>
 
-      </script>
+    <div class="modal fade" id="testReviewDialog" tabindex="-1" role="dialog" aria-labelledby="Test cases for reviews" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-center" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Building Name</h5>
+          </div>
+          <div class="modal-body">
+            <div id="locationsRatingList">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title">Location</div>
+                  <div class="card-rating">
+                    <i class="material-icons">favorite</i>
+                    <i class="material-icons">favorite</i>
+                    <i class="material-icons">favorite</i>
+                    <i class="material-icons">favorite_border</i>
+                    <i class="material-icons">favorite_border</i>
+                  </div>
+                  <div class="card-trash">
+                    <i class="material-icons">delete</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button id="fab" type="button" class="btn bmd-btn-fab roseColorScheme" data-toggle="modal" data-target="#addLocation">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+        </div>
+      </div>
 
   </div>
   <script src="scripts/jquery.min.js"></script>
