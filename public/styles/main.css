@@ -173,18 +173,32 @@ hr {
 
 
 /* Reviews */
-.card-body {
-    display: flex;
-    flex-direction: row;
+#locationsRatingList .card {
+    margin-bottom: 5px;
 }
 
-.card-title {
-    font-size: 1.25em;
-    margin: 0px 10px;
+#locationsRatingList .card-body {
+    display: grid;
+    grid-template-columns: auto 140px 20px;
+    background-color: black;
 }
 
-.card-rating {
-    margin-left: 5px;
+#locationsRatingList .card-title {
+    font-size: 1em;
+    margin: 0px;
+    color: white;
+}
+
+#locationsRatingList .card-rating {
+    align-content: center;
+}
+
+#locationsRatingList .card-trash {
+    align-content: center;
+}
+
+.favorite, .delete {
+    color: white;
 }
 
 
@@ -216,6 +230,15 @@ hr {
     #submitLoginInfo {
         font-size: 2em;
     }
+
+    #locationsRatingList .card-body {
+        grid-template-columns: auto 175px 40px;
+    }
+
+    #locationsRatingList .card-title {
+        font-size: 1.25em;
+        margin-right: 10px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -229,6 +252,15 @@ hr {
 
     #shortDescrip {
         font-size: 2em;
+    }
+
+    #locationsRatingList .card-body {
+        grid-template-columns: auto 175px 40px;
+    }
+
+    #locationsRatingList .card-title {
+        font-size: 1.25em;
+        margin-right: 10px;
     }
 }
 
