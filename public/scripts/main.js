@@ -113,6 +113,14 @@ rhit.FbMapPageManager = class {
 rhit.MonitoringPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
+
+		document.querySelector("#reportData").onclick = (event) => {
+			window.location.href = `/reportDataPage.html`;
+		}
+		document.querySelector("#recentData").onclick = (event) => {
+			window.location.href = `/recentDataPage.html`;
+		}
+
 		rhit.fbMonitoringPageManager.beginListening(this.updateView.bind(this));
 	}
 
