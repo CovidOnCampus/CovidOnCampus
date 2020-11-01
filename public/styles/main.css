@@ -174,7 +174,7 @@ hr {
 
 
 /* Reviews */
-#locationsRatingList .card {
+.card {
     margin-bottom: 5px;
 }
 
@@ -198,12 +198,24 @@ hr {
     align-content: center;
 }
 
-.favorite, .delete {
+#locationsRatingList .favorite, #locationsRatingList .delete {
     color: white;
 }
 
 #testReviewDialog .modal-footer {
     justify-content: space-between;
+}
+
+#reviewDetails {
+    display: flex;
+    justify-content: space-between;
+}
+
+#fab {
+    bottom: 10px;
+    position: fixed;
+    right: 10px;    
+    z-index: 999;
 }
 
 

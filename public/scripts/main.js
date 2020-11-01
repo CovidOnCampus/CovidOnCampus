@@ -3,6 +3,7 @@ var rhit = rhit || {};
 rhit.fbMainPageManager = null;
 rhit.fbMapPageManager = null;
 rhit.fbMonitoringPageManager = null;
+rhit.fbReviewsPageManager = null;
 
 rhit.MainPageController = class {
 	constructor(uid) {
@@ -45,6 +46,10 @@ rhit.FbMainPageManager = class {
 rhit.MapPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
+
+		document.querySelector("#testingReviewsPage").onclick = (event) => {
+			window.location.href = `/reviewsPage.html`;
+		}
 
 		mapboxgl.accessToken = 'pk.eyJ1IjoianVyZ2Vua3IiLCJhIjoiY2tmdm1sNzdoMGFraDJwazBxeWpkZnBrOCJ9.dQrct7WODcutN-X2IZKXGg';
         const bounds = [[-87.333, 39.48], [-87.3215, 39.485]]
@@ -109,6 +114,35 @@ rhit.FbMapPageManager = class {
 	}
 };
 
+rhit.ReviewsPageController = class {
+	constructor(uid) {
+		rhit.setUpDropDown();
+		rhit.fbReviewsPageManager.beginListening(this.updateView.bind(this));
+	}
+
+	updateView() {}
+};
+
+rhit.FbReviewsPageManager = class {
+	constructor(uid) {
+		this._uid = uid;
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
+};
+
 
 rhit.MonitoringPageController = class {
 	constructor(uid) {
@@ -129,7 +163,6 @@ rhit.MonitoringPageController = class {
 
 rhit.FbMonitoringPageManager = class {
 	constructor(uid) {
-		console.log("Monitoring Page");
 		this._uid = uid;
 	  	this._documentSnapshots = [];
 		this._unsubscribe = null;
@@ -233,13 +266,19 @@ rhit.initializePage = function() {
 		new rhit.MapPageController();
 	}
 
+	if (document.querySelector("#reviewsPage")) {
+		const location = urlParams.get("location");
+		rhit.fbReviewsPageManager = new rhit.FbReviewsPageManager(uid, location);
+		new rhit.ReviewsPageController();
+	}
+
 	if (document.querySelector("#monitoringPage")) {
 		rhit.fbMonitoringPageManager = new rhit.FbMonitoringPageManager(uid);
 		new rhit.MonitoringPageController();
 	}
 
 	if (document.querySelector("#loginPage")) {
-		new loginPage.LoginPageController();
+		new rhit.LoginPageController();
 	} 
 };
 
