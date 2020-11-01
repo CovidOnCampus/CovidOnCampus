@@ -145,9 +145,8 @@ hr {
 /* Map Page Related */
 
 #map {
-    width: 75vw;
+    width: 90vw;
     height: 60vh;
-    /* border: black 2px solid; */
     box-shadow: 0 2px 4px rgba(34, 25, 25, 0.4);
 }
 
@@ -163,7 +162,9 @@ hr {
 }
 
 #selectingButtons button {
-    margin: 5px 5px 15px;
+    margin: 5px 2px 15px;
+    font-size: .68em;
+    padding: .4em .3em;
 }
 
 #mapPage {
@@ -201,6 +202,10 @@ hr {
     color: white;
 }
 
+#testReviewDialog .modal-footer {
+    justify-content: space-between;
+}
+
 
 
 
@@ -210,12 +215,9 @@ hr {
     color: white;
 }
 
-@media (min-width: 576px) {
-    #loginPageTitle {
-        font-size: 3em;
-    }
 
-    #mainTitle {
+@media (min-width: 576px) {
+    #loginPageTitle, #mainTitle {
         font-size: 3em;
     }
 
@@ -231,6 +233,12 @@ hr {
         font-size: 2em;
     }
 
+    #selectingButtons button {
+        margin: 5px 5px 15px;
+        font-size: 1.25em;
+        padding: .4em .3em;
+    }
+
     #locationsRatingList .card-body {
         grid-template-columns: auto 175px 40px;
     }
@@ -241,18 +249,31 @@ hr {
     }
 }
 
-@media (min-width: 768px) {
-    #loginPageTitle {
-        font-size: 4em;
-    }
 
-    #mainTitle {
+@media (min-width: 768px) {    
+    #loginPageTitle, #mainTitle {
         font-size: 4em;
     }
 
     #shortDescrip {
         font-size: 2em;
     }
+
+    #map {
+        width: 85vw;
+        height: 60vh;
+    }
+
+    #mapTitle {
+        font-size: 2em;
+    }
+    
+    #selectingButtons button {
+        margin: 5px 5px 15px;
+        font-size: 1.5em;
+        padding: .4em .3em;
+    }
+
 
     #locationsRatingList .card-body {
         grid-template-columns: auto 175px 40px;
@@ -262,5 +283,20 @@ hr {
         font-size: 1.25em;
         margin-right: 10px;
     }
+}
+
+@media (min-width: 992px) {
+    /* #map {
+        width: 75vw;
+        height: 60vh;
+    }
+
+    #mapTitle {
+        font-size: 2em;
+    }
+    
+    #selectingButtons button {
+        margin: 5px 5px 15px;
+    } */
 }
 
