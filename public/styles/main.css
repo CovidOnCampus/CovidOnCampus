@@ -121,6 +121,22 @@ body {
     background-color: #800000;
 }
 
+/* recentDataPage */
+#subTitle {
+    text-align: center;
+}
+
+#dateOfToday {
+    font-size: 2em;
+}
+
+#dateOfTwoDaysAgo {
+    font-size: 2em;
+}
+
+#dateOfYesterday {
+    font-size: 2em;
+}
 
 /* Login Page Related */
 
