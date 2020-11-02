@@ -1,11 +1,26 @@
 var rhit = rhit || {};
 
+
+rhit.FB_COLLECTION_REVIEWS = "Reviews";
+rhit.FB_KEY_COMMENT = "Comment";
+rhit.FB_KEY_RATING = "Rating";
+rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
+rhit.FB_KEY_AUTHOR = "Author";
+
 rhit.fbMainPageManager = null;
 rhit.fbMapPageManager = null;
 rhit.fbMonitoringPageManager = null;
 rhit.fbReviewsPageManager = null;
 rhit.fbReportDataPageManager = null;
 
+
+//From https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
+function htmlToElement(html) {
+	var template = document.createElement('template');
+	html = html.trim();
+	template.innerHTML = html;
+	return template.content.firstChild;
+}   
 rhit.MainPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
@@ -115,34 +130,130 @@ rhit.FbMapPageManager = class {
 	}
 };
 
+rhit.Review = class {
+	constructor(id, comment, rating) {
+	  this.id = id;
+	  this.comment = comment;
+	  this.rating = rating;  
+	}
+}
+
 rhit.ReviewsPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
 
-		let rating = document.querySelector("#inputRating");
+		let ratingSelection = document.querySelector("#inputRating");
 		document.querySelector("#cancelReview").onclick = (event) => {
-			rating.selectedIndex = 0;
+			ratingSelection.selectedIndex = 0;
 		}
 		document.querySelector("#submitAddReview").onclick = (event) => {
-			rating.selectedIndex = 0;
+			const comment = document.querySelector("#inputComment").value;
+			const rating = document.querySelector("#inputRating").value;
+			rhit.fbReviewsPageManager.add(comment, rating);
+			ratingSelection.selectedIndex = 0;
 		}
 
 		rhit.fbReviewsPageManager.beginListening(this.updateView.bind(this));
 	}
 
-	updateView() {}
+	_createReviewCard(review) {
+		let reviewRating = null;
+		if (review.rating == 1) {
+			reviewRating = `<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>`
+		} else if (review.rating == 2) {
+			reviewRating = `<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>`
+		} else if (review.rating == 3) {
+			reviewRating = `<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite_border</i>
+				<i class="material-icons favorite">favorite_border</i>`
+		} else if (review.rating == 4) {
+			reviewRating = `<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite_border</i>`
+		} else if (review.rating == 5) {
+			reviewRating = `<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>
+				<i class="material-icons favorite">favorite</i>`
+		} else {
+			console.error("Need to select a rating");
+		}
+		return htmlToElement(`<div class="card">
+		<div class="card-body">
+		  <div class="card-title">${review.comment}</div>
+		  <div id="reviewDetails">
+			<div class="card-changes">
+				<i class="material-icons">edit</i>
+				<i class="material-icons">delete</i>
+			</div>
+			<div class="card-rating">
+				${reviewRating}
+			</div>
+		  </div>
+		</div>
+	  </div>`);
+	}
+
+	updateView() {
+		const newList = htmlToElement('<div id="reviewsList"></div>');
+		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
+			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
+			const newCard = this._createReviewCard(review);
+			newList.appendChild(newCard);
+		}
+
+		const oldList = document.querySelector("#reviewsList");
+		oldList.removeAttribute("id");
+		oldList.hidden = true;
+		oldList.parentElement.appendChild(newList);
+	
+	}
 };
 
 rhit.FbReviewsPageManager = class {
 	constructor(uid) {
 		this._uid = uid;
-	  	this._documentSnapshots = [];
+		this._documentSnapshots = [];
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_REVIEWS);
 		this._unsubscribe = null;
 	}
 
-	add() {}
+	add(comment, rating) {
+		this._ref.add({
+			[rhit.FB_KEY_COMMENT]: comment,
+			[rhit.FB_KEY_RATING]: rating,
+			[rhit.FB_KEY_AUTHOR]: rhit.fbAuthManager.uid,
+			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+		})
+		.then(function(docRef) {
+			console.log("Document written with ID: ", docRef.id);
+		})
+		.catch(function(error) {
+			console.error("Error adding document: ", error);
+		});		
+	}
 
-	beginListening(changeListener) {}
+	beginListening(changeListener) {
+		let query = this._ref.orderBy(rhit.FB_KEY_LAST_TOUCHED, "desc").limit(50);
+
+		this._unsubscribe = query.onSnapshot((querySnapshot) => {
+			this._documentSnapshots = querySnapshot.docs;
+			changeListener();
+    	});
+	}
 
 	stopListening() {
 		this._unsubscribe();
@@ -150,6 +261,13 @@ rhit.FbReviewsPageManager = class {
 
 	get length() {
 		return this._documentSnapshots.length;
+	}
+
+	getReviewAtIndex(index) {
+		const docSnapshot = this._documentSnapshots[index];
+		const review = new rhit.Review(docSnapshot.id, 
+			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING));
+		return review;
 	}
 };
 
@@ -195,9 +313,6 @@ rhit.ReportDataPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
 
-		document.querySelector("#cancelButton").onclick = (event) => {
-			window.location.href = `/monitoringPage.html`;
-		}
 		document.querySelector("#reportDataSubmitButton").onclick = (event) => {
 			console.log("submitted");
 			//window.location.href = `/monitoringPage.html`;
@@ -210,6 +325,35 @@ rhit.ReportDataPageController = class {
 };
 
 rhit.FbReportDataPageManager = class {
+	constructor(uid) {
+		this._uid = uid;
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
+};
+
+rhit.RecentDataPageController = class {
+	constructor(uid) {
+		rhit.setUpDropDown();
+		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
+	}
+
+	updateView() {}
+};
+
+rhit.FbRecentDataPageManager = class {
 	constructor(uid) {
 		this._uid = uid;
 	  	this._documentSnapshots = [];
@@ -328,6 +472,11 @@ rhit.initializePage = function() {
 	if (document.querySelector("#reportDataPage")) {
 		rhit.fbReportDataPageManager = new rhit.FbReportDataPageManager(uid);
 		new rhit.ReportDataPageController();
+	}
+
+	if (document.querySelector("#recentDataPage")) {
+		rhit.fbRecentDataPageManager = new rhit.FbRecentDataPageManager(uid);
+		new rhit.RecentDataPageController();
 	}
 
 	if (document.querySelector("#loginPage")) {
