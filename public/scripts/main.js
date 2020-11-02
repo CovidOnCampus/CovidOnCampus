@@ -4,6 +4,7 @@ rhit.fbMainPageManager = null;
 rhit.fbMapPageManager = null;
 rhit.fbMonitoringPageManager = null;
 rhit.fbReviewsPageManager = null;
+rhit.fbReportDataPageManager = null;
 
 rhit.MainPageController = class {
 	constructor(uid) {
@@ -117,6 +118,15 @@ rhit.FbMapPageManager = class {
 rhit.ReviewsPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
+
+		let rating = document.querySelector("#inputRating");
+		document.querySelector("#cancelReview").onclick = (event) => {
+			rating.selectedIndex = 0;
+		}
+		document.querySelector("#submitAddReview").onclick = (event) => {
+			rating.selectedIndex = 0;
+		}
+
 		rhit.fbReviewsPageManager.beginListening(this.updateView.bind(this));
 	}
 
@@ -162,6 +172,44 @@ rhit.MonitoringPageController = class {
 };
 
 rhit.FbMonitoringPageManager = class {
+	constructor(uid) {
+		this._uid = uid;
+	  	this._documentSnapshots = [];
+		this._unsubscribe = null;
+	}
+
+	add() {}
+
+	beginListening(changeListener) {}
+
+	stopListening() {
+		this._unsubscribe();
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
+};
+
+rhit.ReportDataPageController = class {
+	constructor(uid) {
+		rhit.setUpDropDown();
+
+		document.querySelector("#cancelButton").onclick = (event) => {
+			window.location.href = `/monitoringPage.html`;
+		}
+		document.querySelector("#reportDataSubmitButton").onclick = (event) => {
+			console.log("submitted");
+			//window.location.href = `/monitoringPage.html`;
+		}
+
+		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
+	}
+
+	updateView() {}
+};
+
+rhit.FbReportDataPageManager = class {
 	constructor(uid) {
 		this._uid = uid;
 	  	this._documentSnapshots = [];
@@ -275,6 +323,11 @@ rhit.initializePage = function() {
 	if (document.querySelector("#monitoringPage")) {
 		rhit.fbMonitoringPageManager = new rhit.FbMonitoringPageManager(uid);
 		new rhit.MonitoringPageController();
+	}
+
+	if (document.querySelector("#reportDataPage")) {
+		rhit.fbReportDataPageManager = new rhit.FbReportDataPageManager(uid);
+		new rhit.ReportDataPageController();
 	}
 
 	if (document.querySelector("#loginPage")) {

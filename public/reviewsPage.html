@@ -78,28 +78,39 @@
         <i class="material-icons">add</i>
       </button>
 
-<!--     
-    <div class="modal fade" id="testReviewDialog" tabindex="-1" role="dialog" aria-labelledby="Test cases for reviews" aria-hidden="true">
+    
+    <div class="modal fade" id="addReview" tabindex="-1" role="dialog" aria-labelledby="Add a new review" aria-hidden="true">
       <div class="modal-dialog modal-dialog-center" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Building Name</h5>
+            <h5 class="modal-title">Add Review</h5>
           </div>
           <div class="modal-body">
-            <div id="locationsRatingList">
-              
-
-            </div>
+            <div class="form-group bmd-form-group"> 
+                <label for="inputCommnet" class="bmd-label-floating">Comment</label>
+                <input type="text" class="form-control" id="inputComment">
+              </div>
+              <div class="form-group bmd-form-group">  
+                <label for="inputRating" class="bmd-label-floating">Rating</label>
+                <select class="form-control" id="inputRating">
+                    <option value="0" selected disabled hidden> 
+                        Rate your experience 
+                    </option> 
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+              </div>
           </div>
   
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-            <button id="fab" type="button" class="btn bmd-btn-fab roseColorScheme" data-toggle="modal" data-target="#addLocation">
-              <i class="material-icons">add</i>
-            </button>
+            <button id="cancelReview" type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+            <button id="submitAddReview" type="button" class="btn" data-dismiss="modal">ADD</button>
           </div>
         </div>
-      </div> -->
+      </div>
 
   </div>
   <script src="scripts/jquery.min.js"></script>
