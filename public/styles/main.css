@@ -79,7 +79,7 @@ body {
 .button-group {
     text-align: center;
     /* border: gray solid 5px; */
-    padding: 5vw;
+    padding: 25px;
 }
 .button-group-two > button {
     font-size: 1.5em;
@@ -89,7 +89,7 @@ body {
 .button-group-two {
     text-align: center;
     /* border: gray solid 5px; */
-    padding: 5vw;
+    padding: 25px;
 }
 #reportData {
     background-color: #800000;
@@ -98,6 +98,8 @@ body {
     border-radius: 4px;
     margin: 10px 0;
     padding: 1em 1em;
+    width: 10em;
+    height: 5em;
 }
 #recentData {
     background-color: #800000;
@@ -106,6 +108,8 @@ body {
     border-radius: 4px;
     margin: 10px 0;
     padding: 1em 1em;
+    width: 10em;
+    height: 5em;
 }
 #personalPastReports {
     background-color: #800000;
@@ -114,6 +118,11 @@ body {
     border-radius: 4px;
     margin: 10px 0;
     padding: 1em 1em;
+    width: 12em;
+    height: 5em;
+}
+#monitoringPage {
+    display: grid;
 }
 
 /* reportDataPage */
