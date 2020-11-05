@@ -18,6 +18,13 @@ rhit.ReviewsPageController = class {
 		document.querySelector("#cancelReview").onclick = (event) => {
 			ratingSelection.selectedIndex = 0;
 		}
+		document.querySelector("#fabAddReview").onclick = (event) => {
+			if (rhit.fbAuthManager.isSignedIn) {
+				$("#addReview").modal("show");
+			} else {
+				alert("You must be signed in to leave a review");
+			};
+		}
 		document.querySelector("#submitAddReview").onclick = (event) => {
 			const comment = document.querySelector("#inputComment").value;
 			const rating = document.querySelector("#inputRating").value;
@@ -30,13 +37,14 @@ rhit.ReviewsPageController = class {
 
 	_createReviewCard(review) {
 		let reviewRating = rhit.getRatingHTML(review);
-		let cardChanges = null;
-		if (review.author == rhit.fbAuthManager.uid) {
-			cardChanges = `<i class="material-icons">edit</i>
-			<i class="material-icons">delete</i>`;
-		} else {
-			cardChanges = "";
+		let cardChanges = "";
+		if (rhit.fbAuthManager.isSignedIn) {
+			if (review.author == rhit.fbAuthManager.uid) {
+				cardChanges = `<i class="material-icons">edit</i>
+				<i class="material-icons">delete</i>`;
+			} 
 		}
+
 		return htmlToElement(`<div class="card">
 		<div class="card-body">
 		  <div class="card-title">${review.comment}</div>
