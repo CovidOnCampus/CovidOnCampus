@@ -27,40 +27,7 @@ rhit.ReviewsPageController = class {
 	}
 
 	_createReviewCard(review) {
-		let reviewRating = null;
-		if (review.rating == 1) {
-			reviewRating = `<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>`
-		} else if (review.rating == 2) {
-			reviewRating = `<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>`
-		} else if (review.rating == 3) {
-			reviewRating = `<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite_border</i>
-				<i class="material-icons favorite">favorite_border</i>`
-		} else if (review.rating == 4) {
-			reviewRating = `<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite_border</i>`
-		} else if (review.rating == 5) {
-			reviewRating = `<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>
-				<i class="material-icons favorite">favorite</i>`
-		} else {
-			console.error("Need to select a rating");
-		}
+		let reviewRating = rhit.getRatingHTML(review);
 		return htmlToElement(`<div class="card">
 		<div class="card-body">
 		  <div class="card-title">${review.comment}</div>

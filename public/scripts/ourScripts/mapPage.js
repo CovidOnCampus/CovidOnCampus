@@ -41,35 +41,104 @@ rhit.MapPageController = class {
 			map.setLayoutProperty('restrooms', 'visibility', 'none');
 		};
 
+		// var coordinates = e.features[0].geometry.coordinates.slice();
+		
+		
+		// // Ensure that if the map is zoomed out such that multiple
+		// // copies of the feature are visible, the popup appears
+		// // over the copy being pointed to.
+		// while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+		// coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		// }
+
 		map.on('click', 'sanitizingStations', function (e) {
-			$("#testReviewDialog").modal("show");
+			var description = e.features[0].properties.description;
+			rhit.findLocations('Sanitizing Station', description);
+			$("#locationsWithRatings").modal("show");
 		});
 
 		map.on('click', 'restrooms', function (e) {
-			$("#testReviewDialog").modal("show");
+			var description = e.features[0].properties.description;
+			rhit.findLocations('Restroom', description);
+			$("#locationsWithRatings").modal("show");
 		});
 
 		map.on('click', 'testingDropOff', function (e) {
-			$("#testReviewDialog").modal("show");
+			var description = e.features[0].properties.description;
+			rhit.findLocations('Testing Drop Off', description);
+			$("#locationsWithRatings").modal("show");
 		});
 
 
 		rhit.fbMapPageManager.beginListening(this.updateView.bind(this));
-	}
+	};
 
 	updateView() {}
 };
 
+rhit.createLocationCard = function(location) {
+	let locationRating = rhit.getRatingHTML(location);
+
+	return htmlToElement(`<div class="card">
+	<div class="card-body">
+	  <div class="card-title">${location.description}</div>
+	  <div class="card-rating">${locationRating}</div>
+	  <div class="card-trash">
+		<i class="material-icons delete">delete</i>
+	  </div>
+	</div>
+  </div>`)
+};
+
+rhit.findLocations = function(type, building) {
+	document.querySelector(".modal-title").innerHTML = building;
+
+	const newList = htmlToElement('<div id="locationsRatingList"></div>');
+	for (let i = 0; i < rhit.fbMapPageManager.length; i++) {
+		const location = rhit.fbMapPageManager.getLocationAtIndex(i);
+		console.log("Type: ", location.type);
+		console.log("Building: ", location.building);
+		if (location.type == type && location.building == building) {
+			const newCard = rhit.createLocationCard(location);
+			newList.appendChild(newCard);
+		}
+	}
+
+	const oldList = document.querySelector("#locationsRatingList");
+	oldList.removeAttribute("id");
+	oldList.hidden = true;
+	oldList.parentElement.appendChild(newList);
+};
+
+
+rhit.Location = class {
+	constructor(id, building, description, type, rating) {
+	  this.id = id;
+	  this.building = building;
+	  this.description = description; 
+	  this.type = type;
+	  this.rating = rating; 
+	}
+}
+
 rhit.FbMapPageManager = class {
 	constructor(uid) {
 		this._uid = uid;
-	  	this._documentSnapshots = [];
+		this._documentSnapshots = [];
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS);
 		this._unsubscribe = null;
 	}
 
 	add() {}
 
-	beginListening(changeListener) {}
+	beginListening(changeListener) {
+		let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);
+
+		this._unsubscribe = query.onSnapshot((querySnapshot) => {
+			this._documentSnapshots = querySnapshot.docs;
+			changeListener();
+    	});
+	}
 
 	stopListening() {
 		this._unsubscribe();
@@ -77,6 +146,13 @@ rhit.FbMapPageManager = class {
 
 	get length() {
 		return this._documentSnapshots.length;
+	}
+
+	getLocationAtIndex(index) {
+		const docSnapshot = this._documentSnapshots[index];
+		const location = new rhit.Location(docSnapshot.id, 
+			docSnapshot.get(rhit.FB_KEY_BUILDING), docSnapshot.get(rhit.FB_KEY_DESCRIPTION), docSnapshot.get(rhit.FB_KEY_TYPE), docSnapshot.get(rhit.FB_KEY_RATING));
+		return location;
 	}
 };
 
@@ -195,3 +271,41 @@ rhit.addLayers = function(map) {
 }
 
 
+rhit.getRatingHTML = function(doc) {
+	let rating = null;
+	if (doc.rating == 1) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating == 2) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating == 3) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating == 4) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating == 5) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>`
+	} else {
+		console.error("Need to select a rating");
+	}
+
+	return rating;
+};
