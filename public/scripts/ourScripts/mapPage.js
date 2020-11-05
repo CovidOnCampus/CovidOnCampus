@@ -41,73 +41,98 @@ rhit.MapPageController = class {
 			map.setLayoutProperty('restrooms', 'visibility', 'none');
 		};
 
-		// var coordinates = e.features[0].geometry.coordinates.slice();
-		
-		
-		// // Ensure that if the map is zoomed out such that multiple
-		// // copies of the feature are visible, the popup appears
-		// // over the copy being pointed to.
-		// while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-		// coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-		// }
-
-		map.on('click', 'sanitizingStations', function (e) {
-			var description = e.features[0].properties.description;
-			rhit.findLocations('Sanitizing Station', description);
+		document.querySelector("#submitAddLocation").onclick = (event) => {
+			const location = document.querySelector("#inputLocation").value;
+			const building = document.querySelector(".modal-title").innerHTML;
+			const type = document.querySelector(".modal-subtitle").innerHTML;
+			rhit.fbMapPageManager.add(location, building, type);
+			document.querySelector("#inputLocation").value = "";
 			$("#locationsWithRatings").modal("show");
+		}
+
+		this._clickFeature('sanitizingStations', 'Sanitizing Station', this._findLocations, this._createLocationCard, map);
+		this._clickFeature('restrooms', 'Restroom', this._findLocations, this._createLocationCard, map);
+		this._clickFeature('testingDropOff', 'Testing Drop Off', this._findLocations, this._createLocationCard, map);
+
+		let popup = new mapboxgl.Popup({
+			closeButton: false,
+			closeOnClick: false
 		});
 
-		map.on('click', 'restrooms', function (e) {
-			var description = e.features[0].properties.description;
-			rhit.findLocations('Restroom', description);
-			$("#locationsWithRatings").modal("show");
-		});
-
-		map.on('click', 'testingDropOff', function (e) {
-			var description = e.features[0].properties.description;
-			rhit.findLocations('Testing Drop Off', description);
-			$("#locationsWithRatings").modal("show");
-		});
-
+		this._hoverFeature('sanitizingStations', popup, map);
+		this._hoverFeature('restrooms', popup, map);
+		this._hoverFeature('testingDropOff', popup, map);
 
 		rhit.fbMapPageManager.beginListening(this.updateView.bind(this));
 	};
 
-	updateView() {}
-};
-
-rhit.createLocationCard = function(location) {
-	let locationRating = rhit.getRatingHTML(location);
-
-	return htmlToElement(`<div class="card">
-	<div class="card-body">
-	  <div class="card-title">${location.description}</div>
-	  <div class="card-rating">${locationRating}</div>
-	  <div class="card-trash">
-		<i class="material-icons delete">delete</i>
-	  </div>
-	</div>
-  </div>`)
-};
-
-rhit.findLocations = function(type, building) {
-	document.querySelector(".modal-title").innerHTML = building;
-
-	const newList = htmlToElement('<div id="locationsRatingList"></div>');
-	for (let i = 0; i < rhit.fbMapPageManager.length; i++) {
-		const location = rhit.fbMapPageManager.getLocationAtIndex(i);
-		console.log("Type: ", location.type);
-		console.log("Building: ", location.building);
-		if (location.type == type && location.building == building) {
-			const newCard = rhit.createLocationCard(location);
-			newList.appendChild(newCard);
+	_createLocationCard = function(location) {
+		let locationRating = rhit.getRatingHTML(location);
+	
+		return htmlToElement(`<div class="card">
+		<div class="card-body">
+		  <div class="card-title">${location.description}</div>
+		  <div class="card-rating">${locationRating}</div>
+		  <div class="card-trash">
+			<i class="material-icons delete">delete</i>
+		  </div>
+		</div>
+	  </div>`)
+	};
+	
+	_findLocations = function(type, building, createLocationCard) {
+		document.querySelector(".modal-title").innerHTML = building;
+		document.querySelector(".modal-subtitle").innerHTML = type;
+	
+		const newList = htmlToElement('<div id="locationsRatingList"></div>');
+		for (let i = 0; i < rhit.fbMapPageManager.length; i++) {
+			const location = rhit.fbMapPageManager.getLocationAtIndex(i);
+			if (location.type == type && location.building == building) {
+				console.log("Type: ", location.type);
+				console.log("Building: ", location.building);
+				const newCard = createLocationCard(location);
+				newCard.onclick = (event) => {
+					window.location.href = `/reviewsPage.html?location=${location.id}`;
+				};
+				newList.appendChild(newCard);
+			}
 		}
+	
+		const oldList = document.querySelector("#locationsRatingList");
+		oldList.removeAttribute("id");
+		oldList.hidden = true;
+		oldList.parentElement.appendChild(newList);
+	};
+
+	_clickFeature(layer, layerDef, findLocations, createCard, map) {
+		map.on('click', layer, function (e) {
+			var description = e.features[0].properties.description;
+			findLocations(layerDef, description, createCard);
+			$("#locationsWithRatings").modal("show");
+		});
 	}
 
-	const oldList = document.querySelector("#locationsRatingList");
-	oldList.removeAttribute("id");
-	oldList.hidden = true;
-	oldList.parentElement.appendChild(newList);
+	_hoverFeature(layer, popup, map) {
+		map.on('mouseenter', layer, function (e) {
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var description = e.features[0].properties.description;
+			 
+			map.getCanvas().style.cursor = 'pointer';
+			
+			while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+			}
+			 
+			popup.setLngLat(coordinates).setHTML(description).addTo(map);
+		});
+
+		map.on('mouseleave', layer, function () {
+			map.getCanvas().style.cursor = '';
+			popup.remove();
+		});
+	}
+
+	updateView() {}
 };
 
 
@@ -129,7 +154,21 @@ rhit.FbMapPageManager = class {
 		this._unsubscribe = null;
 	}
 
-	add() {}
+	add(location, building, type) {
+		this._ref.add({
+			[rhit.FB_KEY_BUILDING]: building,
+			[rhit.FB_KEY_RATING]: 0,
+			[rhit.FB_KEY_TYPE]: type,
+			[rhit.FB_KEY_DESCRIPTION]: location,
+			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+		})
+		.then(function(docRef) {
+			console.log("Document written with ID: ", docRef.id);
+		})
+		.catch(function(error) {
+			console.error("Error adding document: ", error);
+		});	
+	}
 
 	beginListening(changeListener) {
 		let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);
@@ -270,7 +309,7 @@ rhit.addLayers = function(map) {
 	);
 }
 
-
+//Used by Reviews Page as well
 rhit.getRatingHTML = function(doc) {
 	let rating = null;
 	if (doc.rating == 1) {
@@ -304,7 +343,8 @@ rhit.getRatingHTML = function(doc) {
 			<i class="material-icons favorite">favorite</i>
 			<i class="material-icons favorite">favorite</i>`
 	} else {
-		console.error("Need to select a rating");
+		console.log("Need to select a rating");
+		rating = `<div class=favorite>No Reviews yet</div>`
 	}
 
 	return rating;

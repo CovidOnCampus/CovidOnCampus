@@ -61,8 +61,9 @@ rhit.ReviewsPageController = class {
 };
 
 rhit.FbReviewsPageManager = class {
-	constructor(uid) {
+	constructor(uid, location) {
 		this._uid = uid;
+		this._locId = location;
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_REVIEWS);
 		this._unsubscribe = null;
@@ -73,9 +74,11 @@ rhit.FbReviewsPageManager = class {
 			[rhit.FB_KEY_COMMENT]: comment,
 			[rhit.FB_KEY_RATING]: rating,
 			[rhit.FB_KEY_AUTHOR]: rhit.fbAuthManager.uid,
+			[rhit.FB_KEY_LOCATION_ID]: this._locId,
 			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
 		})
 		.then(function(docRef) {
+			
 			console.log("Document written with ID: ", docRef.id);
 		})
 		.catch(function(error) {
@@ -85,6 +88,12 @@ rhit.FbReviewsPageManager = class {
 
 	beginListening(changeListener) {
 		let query = this._ref.orderBy(rhit.FB_KEY_LAST_TOUCHED, "desc").limit(50);
+		console.log(this._locId);
+		if (this._locId) {
+			query = query.where(rhit.FB_KEY_LOCATION_ID, "==", this._locId);
+		} else {
+			console.error("Need a location")
+		}
 
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;

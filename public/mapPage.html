@@ -40,7 +40,6 @@
       <button id="dropOffButton" type="button" class="btn roseColorScheme">Test Drop-off</button>
     </div>
     <div id="map"></div>
-    <button id="testingReviews" type="button" class="btn roseColorScheme" data-toggle="modal" data-target="#testReviewDialog">Testing the Reviews</button>
     <button id="testingReviewsPage" type="button" class="btn roseColorScheme">Testing the Reviews Page</button>
 
 
@@ -49,6 +48,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Building Name</h5>
+            <div class="modal-subtitle">Location Type</div>
           </div>
           <div class="modal-body">
             <div id="locationsRatingList">Loading...</div>
@@ -62,6 +62,26 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="addLocation" tabindex="-1" role="dialog" aria-labelledby="Add a new location" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-center" role="document">
+          <div class="modal-content">
+            <div class="modal-header roseColorScheme">
+              <h5 class="modal-title">Add Location</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group bmd-form-group"> 
+                  <label for="inputLocation" class="bmd-label-floating">Location</label>
+                  <input type="text" class="form-control" id="inputLocation">
+                </div>
+            </div>
+    
+            <div class="modal-footer">
+              <button id="cancelLocation" type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+              <button id="submitAddLocation" type="button" class="btn" data-dismiss="modal">ADD</button>
+            </div>
+          </div>
+        </div>
 
   </div>
   <script src="scripts/importedScripts/jquery.min.js"></script>

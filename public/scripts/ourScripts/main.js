@@ -8,6 +8,7 @@ rhit.FB_KEY_DESCRIPTION = "Location Description";
 rhit.FB_KEY_TYPE = "Location Type";
 rhit.FB_KEY_COMMENT = "Comment";
 rhit.FB_KEY_RATING = "Rating";
+rhit.FB_KEY_LOCATION_ID = "Location ID";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.FB_KEY_AUTHOR = "Author";
 
