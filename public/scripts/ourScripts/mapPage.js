@@ -92,7 +92,8 @@ rhit.MapPageController = class {
 				console.log("Building: ", location.building);
 				const newCard = createLocationCard(location);
 				newCard.onclick = (event) => {
-					window.location.href = `/reviewsPage.html?location=${location.id}`;
+					console.log(location);
+					window.location.href = `/reviewsPage.html?location=${location.id}&name=${location.description}`;
 				};
 				newList.appendChild(newCard);
 			}

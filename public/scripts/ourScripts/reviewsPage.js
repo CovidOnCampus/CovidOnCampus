@@ -1,11 +1,12 @@
 var rhit = rhit || {};
 
 rhit.Review = class {
-	constructor(id, comment, rating, location) {
+	constructor(id, comment, rating, location, author) {
 	  this.id = id;
 	  this.comment = comment;
 	  this.rating = rating;  
 	  this.location = location;
+	  this.author = author;
 	}
 }
 
@@ -29,17 +30,19 @@ rhit.ReviewsPageController = class {
 
 	_createReviewCard(review) {
 		let reviewRating = rhit.getRatingHTML(review);
+		let cardChanges = null;
+		if (review.author == rhit.fbAuthManager.uid) {
+			cardChanges = `<i class="material-icons">edit</i>
+			<i class="material-icons">delete</i>`;
+		} else {
+			cardChanges = "";
+		}
 		return htmlToElement(`<div class="card">
 		<div class="card-body">
 		  <div class="card-title">${review.comment}</div>
 		  <div id="reviewDetails">
-			<div class="card-changes">
-				<i class="material-icons">edit</i>
-				<i class="material-icons">delete</i>
-			</div>
-			<div class="card-rating">
-				${reviewRating}
-			</div>
+			<div class="card-changes">${cardChanges}</div>
+			<div class="card-rating">${reviewRating}</div>
 		  </div>
 		</div>
 	  </div>`);
@@ -47,9 +50,15 @@ rhit.ReviewsPageController = class {
 
 	updateView() {
 		const newList = htmlToElement('<div id="reviewsList"></div>');
+		let location = rhit.fbReviewsPageManager.description;
+
+		document.querySelector("#reviewsTitle").innerHTML = `${location} Reviews`;
 		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
 			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
 			const newCard = this._createReviewCard(review);
+			newCard.onclick = (event) => {
+				
+			};
 			newList.appendChild(newCard);
 		}
 
@@ -62,9 +71,10 @@ rhit.ReviewsPageController = class {
 };
 
 rhit.FbReviewsPageManager = class {
-	constructor(uid, location) {
+	constructor(uid, location, description) {
 		this._uid = uid;
 		this._locId = location;
+		this._description = description;
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_REVIEWS);
 		this._unsubscribe = null;
@@ -88,8 +98,6 @@ rhit.FbReviewsPageManager = class {
 					count++;
 				}
 			}
-			console.log("Rating: ", rating);
-			console.log("Count: ", count);
 			rating = rating / count;
 			console.log(rating);
 			firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS).doc(rhit.fbReviewsPageManager.location)
@@ -131,10 +139,14 @@ rhit.FbReviewsPageManager = class {
 		return this._locId;
 	}
 
+	get description() {
+		return this._description;
+	}
+
 	getReviewAtIndex(index) {
 		const docSnapshot = this._documentSnapshots[index];
 		const review = new rhit.Review(docSnapshot.id, 
-			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING), docSnapshot.get(rhit.FB_KEY_LOCATION_ID));
+			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING), docSnapshot.get(rhit.FB_KEY_LOCATION_ID), docSnapshot.get(rhit.FB_KEY_AUTHOR));
 		return review;
 	}
 };

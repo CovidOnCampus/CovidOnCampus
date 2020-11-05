@@ -93,7 +93,8 @@ rhit.initializePage = function() {
 
 	if (document.querySelector("#reviewsPage")) {
 		const location = urlParams.get("location");
-		rhit.fbReviewsPageManager = new rhit.FbReviewsPageManager(uid, location);
+		const name = urlParams.get("name");
+		rhit.fbReviewsPageManager = new rhit.FbReviewsPageManager(uid, location, name);
 		new rhit.ReviewsPageController();
 	}
 
