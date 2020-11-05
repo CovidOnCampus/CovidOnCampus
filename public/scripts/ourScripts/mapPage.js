@@ -170,6 +170,20 @@ rhit.FbMapPageManager = class {
 		});	
 	}
 
+	update(rating, location) {
+		console.log("updated location");
+		this._ref.doc(location).update({
+			[rhit.FB_KEY_RATING]: rating,
+			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+		})
+		.then(function() {
+			console.log("Document successfully updated");
+		})
+		.catch(function(error) {
+			console.error("Error updating document: ", error);
+		});		
+	}
+
 	beginListening(changeListener) {
 		let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);
 
@@ -312,36 +326,36 @@ rhit.addLayers = function(map) {
 //Used by Reviews Page as well
 rhit.getRatingHTML = function(doc) {
 	let rating = null;
-	if (doc.rating == 1) {
-		rating = `<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>`
-	} else if (doc.rating == 2) {
-		rating = `<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>`
-	} else if (doc.rating == 3) {
-		rating = `<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite_border</i>
-			<i class="material-icons favorite">favorite_border</i>`
-	} else if (doc.rating == 4) {
-		rating = `<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite</i>
-			<i class="material-icons favorite">favorite_border</i>`
-	} else if (doc.rating == 5) {
+	if (doc.rating >= 4.5) {
 		rating = `<i class="material-icons favorite">favorite</i>
 			<i class="material-icons favorite">favorite</i>
 			<i class="material-icons favorite">favorite</i>
 			<i class="material-icons favorite">favorite</i>
 			<i class="material-icons favorite">favorite</i>`
+	} else if (doc.rating >= 3.5) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating >= 2.5) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating >= 1.5) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
+	} else if (doc.rating >= 0.5) {
+		rating = `<i class="material-icons favorite">favorite</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>
+			<i class="material-icons favorite">favorite_border</i>`
 	} else {
 		console.log("Need to select a rating");
 		rating = `<div class=favorite>No Reviews yet</div>`

@@ -1,10 +1,11 @@
 var rhit = rhit || {};
 
 rhit.Review = class {
-	constructor(id, comment, rating) {
+	constructor(id, comment, rating, location) {
 	  this.id = id;
 	  this.comment = comment;
 	  this.rating = rating;  
+	  this.location = location;
 	}
 }
 
@@ -78,7 +79,24 @@ rhit.FbReviewsPageManager = class {
 			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
 		})
 		.then(function(docRef) {
-			
+			let rating = 0;
+			let count = 0;
+			for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
+				const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
+				if (review.location == rhit.fbReviewsPageManager.location) {
+					rating += parseInt(review.rating);
+					count++;
+				}
+			}
+			console.log("Rating: ", rating);
+			console.log("Count: ", count);
+			rating = rating / count;
+			console.log(rating);
+			firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS).doc(rhit.fbReviewsPageManager.location)
+				.update({
+					[rhit.FB_KEY_RATING]: rating,
+					[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+				});
 			console.log("Document written with ID: ", docRef.id);
 		})
 		.catch(function(error) {
@@ -109,10 +127,14 @@ rhit.FbReviewsPageManager = class {
 		return this._documentSnapshots.length;
 	}
 
+	get location() {
+		return this._locId;
+	}
+
 	getReviewAtIndex(index) {
 		const docSnapshot = this._documentSnapshots[index];
 		const review = new rhit.Review(docSnapshot.id, 
-			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING));
+			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING), docSnapshot.get(rhit.FB_KEY_LOCATION_ID));
 		return review;
 	}
 };
