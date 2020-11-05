@@ -34,3 +34,11 @@ rhit.FbReportDataPageManager = class {
 		return this._documentSnapshots.length;
 	}
 };
+
+
+
+//use 146 for reference with the manager
+
+//doc.query("#idForEachSymptom").value = CONSTANT (make a const for each symptom)
+//example of this in reviews (input rating is a dropdown menu)
+
