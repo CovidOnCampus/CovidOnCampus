@@ -18,10 +18,6 @@ rhit.MapPageController = class {
 		map.on("load", function() {
 			rhit.addLayers(map);
 		});
-		
-		document.querySelector("#testingReviewsPage").onclick = (event) => {
-			window.location.href = `/reviewsPage.html`;
-		};
 
 		document.querySelector("#sanitizingButton").onclick = (event) => {
 			map.setLayoutProperty('sanitizingStations', 'visibility', 'visible');

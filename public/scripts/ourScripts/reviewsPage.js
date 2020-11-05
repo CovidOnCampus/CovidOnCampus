@@ -52,7 +52,7 @@ rhit.ReviewsPageController = class {
 		const newList = htmlToElement('<div id="reviewsList"></div>');
 		let location = rhit.fbReviewsPageManager.description;
 
-		document.querySelector("#reviewsTitle").innerHTML = `${location} Reviews`;
+		document.querySelector("#reviewsTitle").innerHTML = `Reviews for ${location}`;
 		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
 			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
 			const newCard = this._createReviewCard(review);
