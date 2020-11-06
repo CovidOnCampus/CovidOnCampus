@@ -89,7 +89,7 @@ rhit.MapPageController = class {
 				const newCard = createLocationCard(location);
 				newCard.onclick = (event) => {
 					console.log(location);
-					window.location.href = `/reviewsPage.html?location=${location.id}&name=${location.description}`;
+					window.location.href = `/reviewsPage.html?location=${location.id}&description=${location.description}&building=${location.building}&type=${location.type}`;
 				};
 				newList.appendChild(newCard);
 			}
@@ -165,20 +165,6 @@ rhit.FbMapPageManager = class {
 		.catch(function(error) {
 			console.error("Error adding document: ", error);
 		});	
-	}
-
-	update(rating, location) {
-		console.log("updated location");
-		this._ref.doc(location).update({
-			[rhit.FB_KEY_RATING]: rating,
-			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
-		})
-		.then(function() {
-			console.log("Document successfully updated");
-		})
-		.catch(function(error) {
-			console.error("Error updating document: ", error);
-		});		
 	}
 
 	beginListening(changeListener) {
