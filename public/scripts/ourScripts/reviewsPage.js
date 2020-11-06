@@ -43,8 +43,8 @@ rhit.ReviewsPageController = class {
 		let cardChanges = "";
 		if (rhit.fbAuthManager.isSignedIn) {
 			if (review.author == rhit.fbAuthManager.uid) {
-				cardChanges = `<i class="material-icons">edit</i>
-				<i class="material-icons">delete</i>`;
+				cardChanges = `<i class="material-icons edit">edit</i>
+				<i class="material-icons delete">delete</i>`;
 			} 
 		}
 
@@ -59,6 +59,22 @@ rhit.ReviewsPageController = class {
 	  </div>`);
 	}
 
+	_editReview(comment, rating) {
+		$("#editReviewDialog").modal("show");
+		console.log(comment, rating);
+		
+		$('#editReviewDialog').on('show.bs.modal', (event) => {
+			//Pre animation
+			document.querySelector("#inputNewComment").value = comment;
+			document.querySelector("#inputNewRating").value = parseInt(rating);
+		});
+
+		$('#editReviewDialog').on('shown.bs.modal', (event) => {
+			//Post animation
+			document.querySelector("#inputNewComment").focus();
+		});
+	}
+
 	updateView() {
 		const newList = htmlToElement('<div id="reviewsList"></div>');
 
@@ -70,9 +86,19 @@ rhit.ReviewsPageController = class {
 		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
 			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
 			const newCard = this._createReviewCard(review);
-			newCard.onclick = (event) => {
-				
+			if (newCard.querySelector(".card-changes").innerHTML != "") {
+				newCard.querySelector(".edit").onclick = (event) => {
+					console.log("edit this item");
+					let comment = review.comment;
+					let rating = review.rating;
+					this._editReview(comment, rating);
+				};
+				newCard.querySelector(".delete").onclick = (event) => {
+					console.log("delete this item");
+					$("#deleteReviewDialog").modal("show");
+				};
 			};
+			
 			newList.appendChild(newCard);
 		}
 

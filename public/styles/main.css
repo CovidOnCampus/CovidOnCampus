@@ -254,7 +254,9 @@ hr {
 }
 
 #addLocation .modal-content .modal-header,
-#addReview .modal-content .modal-header {
+#addReview .modal-content .modal-header,
+#editReviewDialog .modal-content .modal-header,
+#deleteReviewDialog .modal-content .modal-header {
     justify-content: center;
     padding: 10px;
     border-radius: 0px;
