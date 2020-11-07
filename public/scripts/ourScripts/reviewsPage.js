@@ -66,33 +66,41 @@ rhit.ReviewsPageController = class {
 	  </div>`);
 	}
 
-	_editReview(reviewId, comment, rating) {
-		$('#editReviewDialog').on('show.bs.modal', (event) => {
-			//Pre animation
-			document.querySelector("#inputNewComment").value = comment;
-			document.querySelector("#inputNewRating").value = rating;
-		});
-
-		$('#editReviewDialog').on('shown.bs.modal', (event) => {
-			//Post animation
-			document.querySelector("#inputNewComment").focus();
-		});
-
-		$("#editReviewDialog").modal("show");
-
-		document.querySelector("#submitEditReview").onclick = (event) => {
-			const newComment = document.querySelector("#inputNewComment").value;
-			const newRating = document.querySelector("#inputNewRating").value;
-			rhit.fbReviewsPageManager.update(reviewId, newComment, newRating);
-		};
+	_editReview(reviewId, comment, rating, author) {
+		if (rhit.fbAuthManager.uid == author) {
+			$('#editReviewDialog').on('show.bs.modal', (event) => {
+				//Pre animation
+				document.querySelector("#inputNewComment").value = comment;
+				document.querySelector("#inputNewRating").value = rating;
+			});
+	
+			$('#editReviewDialog').on('shown.bs.modal', (event) => {
+				//Post animation
+				document.querySelector("#inputNewComment").focus();
+			});
+	
+			$("#editReviewDialog").modal("show");
+	
+			document.querySelector("#submitEditReview").onclick = (event) => {
+				const newComment = document.querySelector("#inputNewComment").value;
+				const newRating = document.querySelector("#inputNewRating").value;
+				rhit.fbReviewsPageManager.update(reviewId, newComment, newRating);
+			};
+		} else {
+			alert("You are not the author of this review");
+		}
 	};
 
-	_deleteReview(reviewId) {
-		$("#deleteReviewDialog").modal("show");
+	_deleteReview(reviewId, author) {
+		if (rhit.fbAuthManager.uid == author) {
+			$("#deleteReviewDialog").modal("show");
 
-		document.querySelector("#submitDeleteReview").onclick = (event) => {
-			rhit.fbReviewsPageManager.delete(reviewId);
-		};
+			document.querySelector("#submitDeleteReview").onclick = (event) => {
+				rhit.fbReviewsPageManager.delete(reviewId);
+			};
+		} else {
+			alert("You are not the author of this review");
+		}
 	}
 
 	updateView() {
@@ -118,10 +126,10 @@ rhit.ReviewsPageController = class {
 			const newCard = this._createReviewCard(review);
 			if (newCard.querySelector(".card-changes").innerHTML != "") {
 				newCard.querySelector(".edit").onclick = (event) => {
-					this._editReview(review.id, review.comment, review.rating);
+					this._editReview(review.id, review.comment, review.rating, review.author);
 				};
 				newCard.querySelector(".delete").onclick = (event) => {
-					this._deleteReview(review.id);
+					this._deleteReview(review.id, review.author);
 				};
 			};
 			
