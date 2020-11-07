@@ -1,6 +1,5 @@
 var rhit = rhit || {};
 
-rhit.fbLogger = null;
 rhit.Review = class {
 	constructor(id, comment, rating, location, author) {
 	  this.id = id;
@@ -22,6 +21,16 @@ rhit.ReviewsPageController = class {
 		document.querySelector("#fabAddReview").onclick = (event) => {
 			if (rhit.fbAuthManager.isSignedIn) {
 				$("#addReview").modal("show");
+
+				$('#addReview').on('show.bs.modal', (event) => {
+					//Pre animation
+					document.querySelector("#inputComment").value = "";
+				});
+		
+				$('#addReview').on('shown.bs.modal', (event) => {
+					//Post animation
+					document.querySelector("#inputComment").focus();
+				});
 			} else {
 				alert("You must be signed in to leave a review");
 			};
@@ -33,8 +42,6 @@ rhit.ReviewsPageController = class {
 			ratingSelection.selectedIndex = 0;
 		}
 
-		rhit.fbLogger = new rhit.LocationsLoggerManager();
-		rhit.fbLogger.beginListening(this.updateView.bind(this));
 		rhit.fbReviewsPageManager.beginListening(this.updateView.bind(this));
 	}
 
@@ -149,8 +156,19 @@ rhit.FbReviewsPageManager = class {
 			}
 		}
 		rating = rating / count;
+
+		firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS).doc(this.locId).update({
+			[rhit.FB_KEY_RATING]: rating,
+			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+		})
+		.then(function() {
+			rhit.reviewsPageController.updateView();
+		})
+		.catch(function(error) {
+			console.error("Error updating document: ", error);
+		});	
+
 		console.log(rating);
-		rhit.fbLogger.update(rating, rhit.fbReviewsPageManager.locId);
 	}
 
 	add(comment, rating) {
@@ -246,61 +264,5 @@ rhit.FbReviewsPageManager = class {
 
 	get type() {
 		return this._type;
-	}
-};
-
-
-rhit.LocationsLoggerManager = class {
-	constructor() {
-		this._documentSnapshots = [];
-		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS);
-		this._unsubscribe = null;
-	}
-
-	update(rating, locationId) {
-		this._ref.doc(locationId).update({
-			[rhit.FB_KEY_RATING]: rating,
-			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
-		})
-		.then(function() {
-			console.log("Document successfully updated");
-		})
-		.catch(function(error) {
-			console.error("Error updating document: ", error);
-		});		
-	}
-
-	beginListening(changeListener) {
-		let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);
-
-		this._unsubscribe = query.onSnapshot((querySnapshot) => {
-			this._documentSnapshots = querySnapshot.docs;
-			changeListener();
-    	});
-	}
-
-	stopListening() {
-		this._unsubscribe();
-	}
-
-	get length() {
-		return this._documentSnapshots.length;
-	}
-
-	getLocationById(id) {
-		for (let i = 0; i < rhit.LocationsLoggerManager.length; i++) {
-			let docSnapshot = this._documentSnapshots[i];
-			if (docSnapshot.id == id) {
-				return this.getLocationAtIndex(i);
-			}
-		}
-		return null;
-	}
-
-	getLocationAtIndex(index) {
-		const docSnapshot = this._documentSnapshots[index];
-		const location = new rhit.Location(docSnapshot.id, 
-			docSnapshot.get(rhit.FB_KEY_BUILDING), docSnapshot.get(rhit.FB_KEY_DESCRIPTION), docSnapshot.get(rhit.FB_KEY_TYPE), docSnapshot.get(rhit.FB_KEY_RATING));
-		return location;
 	}
 };
