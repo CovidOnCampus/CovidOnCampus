@@ -21,14 +21,8 @@ rhit.ReviewsPageController = class {
 		document.querySelector("#fabAddReview").onclick = (event) => {
 			if (rhit.fbAuthManager.isSignedIn) {
 				$("#addReview").modal("show");
-
-				$('#addReview').on('show.bs.modal', (event) => {
-					//Pre animation
-					document.querySelector("#inputComment").value = "";
-				});
 		
 				$('#addReview').on('shown.bs.modal', (event) => {
-					//Post animation
 					document.querySelector("#inputComment").focus();
 				});
 			} else {
@@ -39,6 +33,7 @@ rhit.ReviewsPageController = class {
 			const comment = document.querySelector("#inputComment").value;
 			const rating = document.querySelector("#inputRating").value;
 			rhit.fbReviewsPageManager.add(comment, rating);
+			document.querySelector("#inputComment").value = "";
 			ratingSelection.selectedIndex = 0;
 		}
 
@@ -69,13 +64,11 @@ rhit.ReviewsPageController = class {
 	_editReview(reviewId, comment, rating, author) {
 		if (rhit.fbAuthManager.uid == author) {
 			$('#editReviewDialog').on('show.bs.modal', (event) => {
-				//Pre animation
 				document.querySelector("#inputNewComment").value = comment;
 				document.querySelector("#inputNewRating").value = rating;
 			});
 	
 			$('#editReviewDialog').on('shown.bs.modal', (event) => {
-				//Post animation
 				document.querySelector("#inputNewComment").focus();
 			});
 	
