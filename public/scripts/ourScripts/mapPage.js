@@ -43,12 +43,11 @@ rhit.MapPageController = class {
 			const type = document.querySelector(".modal-subtitle").innerHTML;
 			rhit.fbMapPageManager.add(location, building, type);
 			document.querySelector("#inputLocation").value = "";
-			$("#locationsWithRatings").modal("show");
 		}
 
-		this._clickFeature('sanitizingStations', 'Sanitizing Station', this._findLocations, this._createLocationCard, map);
-		this._clickFeature('restrooms', 'Restroom', this._findLocations, this._createLocationCard, map);
-		this._clickFeature('testingDropOff', 'Testing Drop Off', this._findLocations, this._createLocationCard, map);
+		this._clickFeature('sanitizingStations', 'Sanitizing Station', this._findLocations, this._createLocationCard, this._deleteLocation, map);
+		this._clickFeature('restrooms', 'Restroom', this._findLocations, this._createLocationCard, this._deleteLocation, map);
+		this._clickFeature('testingDropOff', 'Testing Drop Off', this._findLocations, this._createLocationCard, this._deleteLocation, map);
 
 		let popup = new mapboxgl.Popup({
 			closeButton: false,
@@ -75,8 +74,17 @@ rhit.MapPageController = class {
 		</div>
 	  </div>`)
 	};
+
+	_deleteLocation(locationId) {
+		$("#deleteLocationDialog").modal("show");
+
+		document.querySelector("#submitDeleteLocation").onclick = (event) => {
+			rhit.fbMapPageManager.delete(locationId);
+			$("#locationsWithRatings").modal("hide");
+		};
+	}
 	
-	_findLocations = function(type, building, createLocationCard) {
+	_findLocations(type, building, createLocationCard, deleteLocation) {
 		document.querySelector(".modal-title").innerHTML = building;
 		document.querySelector(".modal-subtitle").innerHTML = type;
 	
@@ -87,10 +95,16 @@ rhit.MapPageController = class {
 				console.log("Type: ", location.type);
 				console.log("Building: ", location.building);
 				const newCard = createLocationCard(location);
-				newCard.onclick = (event) => {
-					console.log(location);
+				newCard.querySelector(".card-trash").onclick = (event) => {
+					deleteLocation(location.id);
+				};
+				newCard.querySelector(".card-title").onclick = (event) => {
 					window.location.href = `/reviewsPage.html?location=${location.id}&description=${location.description}&building=${location.building}&type=${location.type}`;
 				};
+				newCard.querySelector(".card-rating").onclick = (event) => {
+					window.location.href = `/reviewsPage.html?location=${location.id}&description=${location.description}&building=${location.building}&type=${location.type}`;
+				};
+				
 				newList.appendChild(newCard);
 			}
 		}
@@ -101,10 +115,10 @@ rhit.MapPageController = class {
 		oldList.parentElement.appendChild(newList);
 	};
 
-	_clickFeature(layer, layerDef, findLocations, createCard, map) {
+	_clickFeature(layer, layerDef, findLocations, createCard, deleteLocation, map) {
 		map.on('click', layer, function (e) {
 			var description = e.features[0].properties.description;
-			findLocations(layerDef, description, createCard);
+			findLocations(layerDef, description, createCard, deleteLocation);
 			$("#locationsWithRatings").modal("show");
 		});
 	}
@@ -165,6 +179,14 @@ rhit.FbMapPageManager = class {
 		.catch(function(error) {
 			console.error("Error adding document: ", error);
 		});	
+	}
+
+	delete(locationId) {
+		this._ref.doc(locationId).delete().then(function () {
+			console.log("Document successfully deleted!");
+		}).catch(function (error) {
+			console.log("Error removing document: ", error);
+		});
 	}
 
 	beginListening(changeListener) {

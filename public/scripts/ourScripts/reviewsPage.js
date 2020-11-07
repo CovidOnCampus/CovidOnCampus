@@ -59,20 +59,33 @@ rhit.ReviewsPageController = class {
 	  </div>`);
 	}
 
-	_editReview(comment, rating) {
-		$("#editReviewDialog").modal("show");
-		console.log(comment, rating);
-		
+	_editReview(reviewId, comment, rating) {
 		$('#editReviewDialog').on('show.bs.modal', (event) => {
 			//Pre animation
 			document.querySelector("#inputNewComment").value = comment;
-			document.querySelector("#inputNewRating").value = parseInt(rating);
+			document.querySelector("#inputNewRating").value = rating;
 		});
 
 		$('#editReviewDialog').on('shown.bs.modal', (event) => {
 			//Post animation
 			document.querySelector("#inputNewComment").focus();
 		});
+
+		$("#editReviewDialog").modal("show");
+
+		document.querySelector("#submitEditReview").onclick = (event) => {
+			const newComment = document.querySelector("#inputNewComment").value;
+			const newRating = document.querySelector("#inputNewRating").value;
+			rhit.fbReviewsPageManager.update(reviewId, newComment, newRating);
+		};
+	};
+
+	_deleteReview(reviewId) {
+		$("#deleteReviewDialog").modal("show");
+
+		document.querySelector("#submitDeleteReview").onclick = (event) => {
+			rhit.fbReviewsPageManager.delete(reviewId);
+		};
 	}
 
 	updateView() {
@@ -88,14 +101,10 @@ rhit.ReviewsPageController = class {
 			const newCard = this._createReviewCard(review);
 			if (newCard.querySelector(".card-changes").innerHTML != "") {
 				newCard.querySelector(".edit").onclick = (event) => {
-					console.log("edit this item");
-					let comment = review.comment;
-					let rating = review.rating;
-					this._editReview(comment, rating);
+					this._editReview(review.id, review.comment, review.rating);
 				};
 				newCard.querySelector(".delete").onclick = (event) => {
-					console.log("delete this item");
-					$("#deleteReviewDialog").modal("show");
+					this._deleteReview(review.id);
 				};
 			};
 			
@@ -122,6 +131,21 @@ rhit.FbReviewsPageManager = class {
 		this._unsubscribe = null;
 	}
 
+	_updateLocationRating() {
+		let rating = 0;
+		let count = 0;
+		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
+			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
+			if (review.location == rhit.fbReviewsPageManager.locId) {
+				rating += parseInt(review.rating);
+				count++;
+			}
+		}
+		rating = rating / count;
+		console.log(rating);
+		rhit.fbLogger.update(rating, rhit.fbReviewsPageManager.locId);
+	}
+
 	add(comment, rating) {
 		this._ref.add({
 			[rhit.FB_KEY_COMMENT]: comment,
@@ -130,24 +154,35 @@ rhit.FbReviewsPageManager = class {
 			[rhit.FB_KEY_LOCATION_ID]: this._locId,
 			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
 		})
-		.then(function(docRef) {
-			let rating = 0;
-			let count = 0;
-			for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
-				const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
-				if (review.location == rhit.fbReviewsPageManager.locId) {
-					rating += parseInt(review.rating);
-					count++;
-				}
-			}
-			rating = rating / count;
-			console.log(rating);
-			rhit.fbLogger.update(rating, rhit.fbReviewsPageManager.locId);
-			console.log("Document written with ID: ", docRef.id);
+		.then(function() {
+			rhit.fbReviewsPageManager._updateLocationRating();
 		})
 		.catch(function(error) {
 			console.error("Error adding document: ", error);
 		});		
+	}
+
+	update(reviewId, comment, rating) {
+		this._ref.doc(reviewId).update({
+			[rhit.FB_KEY_RATING]: rating,
+			[rhit.FB_KEY_COMMENT]: comment,
+			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+		})
+		.then(function() {
+			rhit.fbReviewsPageManager._updateLocationRating();
+		})
+		.catch(function(error) {
+			console.error("Error updating document: ", error);
+		});	
+
+	}
+
+	delete(reviewId) {
+		this._ref.doc(reviewId).delete().then(function () {
+			rhit.fbReviewsPageManager._updateLocationRating();
+		}).catch(function (error) {
+			console.log("Error removing document: ", error);
+		});
 	}
 
 	beginListening(changeListener) {
@@ -169,6 +204,23 @@ rhit.FbReviewsPageManager = class {
 		this._unsubscribe();
 	}
 
+	getReviewById(id) {
+		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
+			let docSnapshot = this._documentSnapshots[i];
+			if (docSnapshot.id == id) {
+				return this.getReviewAtIndex(i);
+			}
+		}
+		return null;
+	}
+
+	getReviewAtIndex(index) {
+		const docSnapshot = this._documentSnapshots[index];
+		const review = new rhit.Review(docSnapshot.id, 
+			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING), docSnapshot.get(rhit.FB_KEY_LOCATION_ID), docSnapshot.get(rhit.FB_KEY_AUTHOR));
+		return review;
+	}
+
 	get length() {
 		return this._documentSnapshots.length;
 	}
@@ -188,13 +240,6 @@ rhit.FbReviewsPageManager = class {
 	get type() {
 		return this._type;
 	}
-
-	getReviewAtIndex(index) {
-		const docSnapshot = this._documentSnapshots[index];
-		const review = new rhit.Review(docSnapshot.id, 
-			docSnapshot.get(rhit.FB_KEY_COMMENT), docSnapshot.get(rhit.FB_KEY_RATING), docSnapshot.get(rhit.FB_KEY_LOCATION_ID), docSnapshot.get(rhit.FB_KEY_AUTHOR));
-		return review;
-	}
 };
 
 
@@ -206,9 +251,9 @@ rhit.LocationsLoggerManager = class {
 		this._unsubscribe = null;
 	}
 
-	update(rating, location) {
+	update(rating, locationId) {
 		console.log("updated location");
-		this._ref.doc(location).update({
+		this._ref.doc(locationId).update({
 			[rhit.FB_KEY_RATING]: rating,
 			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
 		})
