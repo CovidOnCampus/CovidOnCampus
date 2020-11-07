@@ -91,10 +91,20 @@ rhit.ReviewsPageController = class {
 	updateView() {
 		const newList = htmlToElement('<div id="reviewsList"></div>');
 
-		let building = rhit.fbReviewsPageManager.building;
-		let description = rhit.fbReviewsPageManager.description;
-		let type = rhit.fbReviewsPageManager.type;
-		document.querySelector("#reviewsTitle").innerHTML = `<h3>${building}</h3><h5>Reviews for ${description} ${type}</h5>`;
+		firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS).doc(rhit.fbReviewsPageManager.locId).get().then(function(doc) {
+			if (doc.exists) {
+				let building = doc.get(rhit.FB_KEY_BUILDING);
+				let description = doc.get(rhit.FB_KEY_DESCRIPTION);
+				let type = doc.get(rhit.FB_KEY_TYPE);
+				let rating = doc.get(rhit.FB_KEY_RATING);
+				document.querySelector("#reviewsTitle").innerHTML = `<h3>${building}</h3><h5>Reviews for ${description} ${type}</h5>
+																		<h6>Current rating is ${rating.toFixed(2)}`;
+			} else {
+				console.log("No such document!");
+			}
+		}).catch(function(error) {
+			console.log("Error getting document:", error);
+		});
 
 		for (let i = 0; i < rhit.fbReviewsPageManager.length; i++) {
 			const review = rhit.fbReviewsPageManager.getReviewAtIndex(i);
@@ -120,12 +130,9 @@ rhit.ReviewsPageController = class {
 };
 
 rhit.FbReviewsPageManager = class {
-	constructor(uid, locId, description, building, type) {
+	constructor(uid, locId) {
 		this._uid = uid;
 		this._locId = locId;
-		this._description = description;
-		this._building = building;
-		this._type = type;
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_REVIEWS);
 		this._unsubscribe = null;
@@ -245,14 +252,12 @@ rhit.FbReviewsPageManager = class {
 
 rhit.LocationsLoggerManager = class {
 	constructor() {
-		// this._uid = uid;
 		this._documentSnapshots = [];
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS);
 		this._unsubscribe = null;
 	}
 
 	update(rating, locationId) {
-		console.log("updated location");
 		this._ref.doc(locationId).update({
 			[rhit.FB_KEY_RATING]: rating,
 			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
@@ -289,7 +294,7 @@ rhit.LocationsLoggerManager = class {
 				return this.getLocationAtIndex(i);
 			}
 		}
-		// return null;
+		return null;
 	}
 
 	getLocationAtIndex(index) {

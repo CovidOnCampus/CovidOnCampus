@@ -209,6 +209,10 @@ hr {
 
 
 /* Reviews */
+h6 {
+    font-weight: 100;
+}
+
 .card {
     margin-bottom: 5px;
 }

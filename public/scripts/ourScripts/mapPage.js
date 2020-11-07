@@ -92,17 +92,15 @@ rhit.MapPageController = class {
 		for (let i = 0; i < rhit.fbMapPageManager.length; i++) {
 			const location = rhit.fbMapPageManager.getLocationAtIndex(i);
 			if (location.type == type && location.building == building) {
-				console.log("Type: ", location.type);
-				console.log("Building: ", location.building);
 				const newCard = createLocationCard(location);
 				newCard.querySelector(".card-trash").onclick = (event) => {
 					deleteLocation(location.id);
 				};
 				newCard.querySelector(".card-title").onclick = (event) => {
-					window.location.href = `/reviewsPage.html?location=${location.id}&description=${location.description}&building=${location.building}&type=${location.type}`;
+					window.location.href = `/reviewsPage.html?location=${location.id}`;
 				};
 				newCard.querySelector(".card-rating").onclick = (event) => {
-					window.location.href = `/reviewsPage.html?location=${location.id}&description=${location.description}&building=${location.building}&type=${location.type}`;
+					window.location.href = `/reviewsPage.html?location=${location.id}`;
 				};
 				
 				newList.appendChild(newCard);
