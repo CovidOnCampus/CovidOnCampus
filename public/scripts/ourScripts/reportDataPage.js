@@ -27,7 +27,7 @@ document.query("soreThroat").value = soreThroat;
 document.query("tasteOrSmell").value = tasteOrSmell;
 
 rhit.FbReportDataPageManager = class {
-	constructor(uid) {
+	constructor(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell) {
 		rhit.setUpDropDown();
 
 		let coughAnswer = document.querySelector("#cough");
