@@ -20,21 +20,20 @@ rhit.ReportDataPageController = class {
 
 		//let ratingSelection = document.querySelector("#inputRating");
 		document.querySelector("#cancelForm").onclick = (event) => {
-			ratingSelection.selectedIndex = "No";
+			ratingSelection.selectedIndex = 0;
 		}
 
 		document.querySelector("#reportDataSubmitButton").onclick = (event) => {
 			console.log("submitted");
-			let cough = document.query("#cough").value;
-			let difficultyBreathing = document.query("#difficultyBreathing").value;
-			let chills = document.query("#chills").value;
-			let musclePain = document.query("#musclePain").value;
-			let headache = document.query("#headache").value;
-			let soreThroat = document.query("#soreThroat").value;
-			let tasteOrSmell = document.query("#tasteOrSmell").value;
+			let cough = document.querySelector("#cough").value;
+			let difficultyBreathing = document.querySelector("#difficultyBreathing").value;
+			let chills = document.querySelector("#chills").value;
+			let musclePain = document.querySelector("#musclePain").value;
+			let headache = document.querySelector("#headache").value;
+			let soreThroat = document.querySelector("#soreThroat").value;
+			let tasteOrSmell = document.querySelector("#tasteOrSmell").value;
 			rhit.fbReportDataPageManager.add(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
 		}
-
 		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
 	}
 
