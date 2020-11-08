@@ -3,6 +3,7 @@ var rhit = rhit || {};
 
 rhit.FB_COLLECTION_REVIEWS = "Reviews";
 rhit.FB_COLLECTION_LOCATIONS = "Locations";
+rhit.FB_COLLECTION_MONITORING = "Daily Monitoring";
 rhit.FB_KEY_BUILDING = "Building";
 rhit.FB_KEY_DESCRIPTION = "Location Description";
 rhit.FB_KEY_TYPE = "Location Type";
