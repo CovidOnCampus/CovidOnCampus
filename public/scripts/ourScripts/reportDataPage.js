@@ -54,7 +54,12 @@ rhit.ReportDataPageController = class {
 		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
 	}
 
-	updateView() {}
+	updateView() {
+		
+
+
+
+	}
 };
 
 rhit.fbReportDataPageManager = class {
