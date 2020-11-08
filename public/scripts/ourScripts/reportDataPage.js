@@ -32,6 +32,7 @@ rhit.ReportDataPageController = class {
 			let headache = document.querySelector("#headache").value;
 			let soreThroat = document.querySelector("#soreThroat").value;
 			let tasteOrSmell = document.querySelector("#tasteOrSmell").value;
+			console.log(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
 			rhit.fbReportDataPageManager.add(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
 		}
 		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
