@@ -12,13 +12,21 @@ rhit.RecentDataPageController = class {
 rhit.FbRecentDataPageManager = class {
 	constructor(uid) {
 		this._uid = uid;
-	  	this._documentSnapshots = [];
+		this._documentSnapshots = [];
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS);
 		this._unsubscribe = null;
 	}
 
 	add() {}
 
-	beginListening(changeListener) {}
+	beginListening(changeListener) {
+		let query = this._ref.orderBy(rhit.FB_KEY_TIMESTAMP).limit(50);
+
+		this._unsubscribe = query.onSnapshot((querySnapshot) => {
+			this._documentSnapshots = querySnapshot.docs;
+			changeListener();
+    	});
+	}
 
 	stopListening() {
 		this._unsubscribe();

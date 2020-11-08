@@ -11,6 +11,17 @@ rhit.FB_KEY_RATING = "Rating";
 rhit.FB_KEY_LOCATION_ID = "Location ID";
 rhit.FB_KEY_LAST_TOUCHED = "lastTouched";
 rhit.FB_KEY_AUTHOR = "Author";
+rhit.FB_KEY_CHILLS = "Chills";
+rhit.FB_KEY_HEADACHE = "Headache";
+rhit.FB_KEY_TASTE_SMELL = "Loss of taste/smell";
+rhit.FB_KEY_MUSCLE_PAIN = "Muscle pain";
+rhit.FB_KEY_COUGH = "New or worsening cough?";
+rhit.FB_KEY_BREATHING = "Shortness of breath/difficulty breathing?";
+rhit.FB_KEY_SORE_THROAT = "Sore throat";
+rhit.FB_KEY_TEMPERATURE = "Temperature";
+rhit.FB_KEY_TIMESTAMP = "Timestamp";
+rhit.FB_KEY_USER = "User";
+rhit.FB_KEY_HIGH_TEMP = "Was your temperature above 101.4?";
 
 rhit.fbMainPageManager = null;
 rhit.fbMapPageManager = null;
