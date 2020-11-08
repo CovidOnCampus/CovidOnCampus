@@ -15,11 +15,61 @@ rhit.ReportDataPageController = class {
 	updateView() {}
 };
 
+
+
+//added
+document.query("cough").value = cough;
+document.query("difficultyBreathing").value = difficultyBreathing;
+document.query("chills").value = chills;
+document.query("musclePain").value = musclePain;
+document.query("headache").value = headache;
+document.query("soreThroat").value = soreThroat;
+document.query("tasteOrSmell").value = tasteOrSmell;
+
 rhit.FbReportDataPageManager = class {
 	constructor(uid) {
-		this._uid = uid;
-	  	this._documentSnapshots = [];
-		this._unsubscribe = null;
+		rhit.setUpDropDown();
+
+		let coughAnswer = document.querySelector("#cough");
+		let breathingAnswer = document.querySelector("#difficultyBreathing");
+		let chillsAnswer = document.querySelector("#chills");
+		let musclePainAnswer = document.querySelector("#musclePain");
+		let headacheAnswer = document.querySelector("#headache");
+		let soreThroatAnswer = document.querySelector("#soreThroat");
+		let tateOrSmellAnswer = document.querySelector("#tasteOrSmell");
+
+		document.querySelector("#cancelForm").onclick = (event) => {
+			ratingSelection.selectedIndex = 0;
+		}
+
+		//not sure how to add form?
+		document.querySelector("#fabAddForm").onclick = (event) => {
+			if (rhit.fbAuthManager.isSignedIn) {
+				$("#addForm").modal("show");
+				$('#addForm').on('shown.bs.modal', (event) => {
+					document.querySelector("#inputComment").focus();
+				});
+			} else {
+				alert("You must be signed in to fill out a form");
+			};
+		}
+
+		document.querySelector("#submitAddForm").onclick = (event) => {
+			coughAnswer = document.querySelector("#cough").value;
+			breathingAnswer = document.querySelector("#difficultyBreathing").value;
+			chillsAnswer = document.querySelector("#chills").value;
+			musclePainAnswer = document.querySelector("#musclePain").value;
+			headacheAnswer = document.querySelector("#headache").value;
+			soreThroatAnswer = document.querySelector("#soreThroat").value;
+			tateOrSmellAnswer = document.querySelector("#tasteOrSmell").value;
+
+			rhit.fbReviewsPageManager.add(coughAnswer, breathingAnswer, chillsAnswer, musclePainAnswer, 
+				headacheAnswer, soreThroatAnswer, tateOrSmellAnswer);
+			//document.querySelector("#inputComment").value = "";
+			ratingSelection.selectedIndex = 0;
+		}
+
+		rhit.fbReviewsPageManager.beginListening(this.updateView.bind(this));
 	}
 
 	add() {}
@@ -30,26 +80,9 @@ rhit.FbReportDataPageManager = class {
 		this._unsubscribe();
 	}
 
-	get length() {
-		return this._documentSnapshots.length;
-	}
 };
 
-
-
-
-
-
-//added
-
-document.query("cough").value = cough;
-document.query("difficultyBreathing").value = cough;
-document.query("chills").value = cough;
-document.query("musclePain").value = cough;
-document.query("headache").value = cough;
-document.query("soreThroat").value = cough;
-document.query("tasteOrSmell").value = cough;
-
+//needed?
 
 rhit.FbMapPageManager = class {
 	constructor(uid) {
@@ -58,7 +91,6 @@ rhit.FbMapPageManager = class {
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_LOCATIONS);
 		this._unsubscribe = null;
 	}
-
 
 	// beginListening(changeListener) {
 	// 	let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);

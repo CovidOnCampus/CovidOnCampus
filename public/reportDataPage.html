@@ -32,6 +32,11 @@
   </nav>
   <div id="reportDataPage" class="container page-container">
 
+    <!--added? not sure if needed to add form-->
+    <button id="fabAddForm" type="button" class="btn bmd-btn-fab roseColorScheme">
+      <i class="material-icons">add</i>
+  </button>
+
     <h1 id = "mainTitle">Symptom/Temperature Report</h1>
     <!-- starting symptom report -->
     <div class="form-group">
@@ -85,17 +90,17 @@
     </div>
     <!-- starting temperature report -->
     <div class="form-group">
-      <label for="exampleTextarea" class="bmd-label-floating">Temperature</label>
+      <label id="inputTemp" class="bmd-label-floating">Temperature</label>
       <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
     </div>
     <div class="form-group">
-      <label for="exampleSelect1" class="bmd-label-floating">Was your temperature above 101.4?</label>
+      <label id="tempAbove" class="bmd-label-floating">Was your temperature above 101.4?</label>
       <select class="form-control" id="exampleSelect1">
         <option>No</option>
         <option>Yes</option>
       </select>
     </div>
-    <button class="btn btn-default">Cancel</button>
+    <button id="cancelForm" class="btn btn-default">Cancel</button>
     <button id = "reportDataSubmitButton" type="submit" class="btn btn-primary btn-raised">Submit</button>
   </div>
 
