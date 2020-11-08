@@ -18,51 +18,32 @@ rhit.ReportDataPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
 
-		//create inputRating in html
-		let ratingSelection = document.querySelector("#inputRating");
+		//let ratingSelection = document.querySelector("#inputRating");
 		document.querySelector("#cancelForm").onclick = (event) => {
 			ratingSelection.selectedIndex = "No";
 		}
 
 		document.querySelector("#reportDataSubmitButton").onclick = (event) => {
 			console.log("submitted");
-			document.query("cough").value = cough;
-			document.query("difficultyBreathing").value = difficultyBreathing;
-			document.query("chills").value = chills;
-			document.query("musclePain").value = musclePain;
-			document.query("headache").value = headache;
-			document.query("soreThroat").value = soreThroat;
-			document.query("tasteOrSmell").value = tasteOrSmell;
-			//window.location.href = `/monitoringPage.html`;
+			let cough = document.query("#cough").value;
+			let difficultyBreathing = document.query("#difficultyBreathing").value;
+			let chills = document.query("#chills").value;
+			let musclePain = document.query("#musclePain").value;
+			let headache = document.query("#headache").value;
+			let soreThroat = document.query("#soreThroat").value;
+			let tasteOrSmell = document.query("#tasteOrSmell").value;
+			rhit.fbReportDataPageManager.add(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
 		}
-
-		// document.querySelector("#submitAddForm").onclick = (event) => {
-		// 	coughAnswer = document.querySelector("#cough").value;
-		// 	breathingAnswer = document.querySelector("#difficultyBreathing").value;
-		// 	chillsAnswer = document.querySelector("#chills").value;
-		// 	musclePainAnswer = document.querySelector("#musclePain").value;
-		// 	headacheAnswer = document.querySelector("#headache").value;
-		// 	soreThroatAnswer = document.querySelector("#soreThroat").value;
-		// 	tateOrSmellAnswer = document.querySelector("#tasteOrSmell").value;
-
-		// 	rhit.fbReportDataPageManager.add(coughAnswer, breathingAnswer, chillsAnswer, musclePainAnswer, 
-		// 		headacheAnswer, soreThroatAnswer, tateOrSmellAnswer);
-		// 	//document.querySelector("#inputComment").value = "";
-		// 	ratingSelection.selectedIndex = 0;
-		// }
 
 		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
 	}
 
 	updateView() {
-		
-
-
 
 	}
 };
 
-rhit.fbReportDataPageManager = class {
+rhit.FbReportDataPageManager = class {
 	constructor(uid) {
 		this.uid = uid;
 		this._documentSnapshots = [];
