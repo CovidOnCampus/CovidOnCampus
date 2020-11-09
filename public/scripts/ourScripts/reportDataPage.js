@@ -33,7 +33,9 @@ rhit.ReportDataPageController = class {
 			let soreThroat = document.querySelector("#soreThroat").value;
 			let tasteOrSmell = document.querySelector("#tasteOrSmell").value;
 			console.log(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
-			rhit.fbReportDataPageManager.add(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell);
+			let temp = document.querySelector("#temp").value;
+			let highTemp = document.querySelector("#highTemp").value;
+			rhit.fbReportDataPageManager.add(cough, difficultyBreathing, chills, musclePain, headache, soreThroat, tasteOrSmell, temp, highTemp);
 		}
 		rhit.fbReportDataPageManager.beginListening(this.updateView.bind(this));
 	}
