@@ -64,10 +64,12 @@ rhit.FbReportDataPageManager = class {
 			[rhit.FB_KEY_TASTE_SMELL]: tasteOrSmell,
 			[rhit.FB_KEY_TEMPERATURE]: temp,
 			[rhit.FB_KEY_HIGH_TEMP]: highTemp,
-			[rhit.FB_KEY_LAST_TOUCHED]: firebase.firestore.Timestamp.now(),
+			[rhit.FB_KEY_USER]: rhit.fbAuthManager.uid,
+			[rhit.FB_KEY_TIMESTAMP]: firebase.firestore.Timestamp.now(),
 		})
 		.then(function() {
 			console.log("Document was added");
+			window.location.href = `/monitoringPage.html`;
 		})
 		.catch(function(error) {
 			console.error("Error adding document: ", error);

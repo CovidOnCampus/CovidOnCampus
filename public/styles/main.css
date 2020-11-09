@@ -131,21 +131,20 @@ body {
 }
 
 /* recentDataPage */
-#subTitle {
+#recentDataTitle {
     text-align: center;
+    font-size: 1.5em;
 }
 
-#dateOfToday {
-    font-size: 2em;
+#recentDataSubTitle {
+    text-align: center;
+    font-size: 1em;
 }
 
-#dateOfTwoDaysAgo {
-    font-size: 2em;
+#recentDataTable th {
+    color: white
 }
 
-#dateOfYesterday {
-    font-size: 2em;
-}
 
 /* Login Page Related */
 
