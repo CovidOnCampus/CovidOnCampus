@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
   <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/calendar.css">
   <title>COVID on Campus</title>
 </head>
 
@@ -30,33 +31,130 @@
       </div>
     </div>
   </nav>
-  <div id="pastReportsPage" class="container page-container">
+  <div id="pastReportsPage" class="page-container">
 
-    <h1 id = "recentDataTitle">Recent Symptom/Temperature Data</h1>
-    <h2 id = "recentDataSubTitle">These are all of your recent statistics</h2>
-    <hr>
-    <table id="recentDataTable" class="table table-striped roseColorScheme">
-      <thead>
-        <tr>
-          <th scope="col">Time</th>
-          <th scope="col">Temperature</th>
-          <th scope="col">Symptoms</th>
-        </tr>
-      </thead>
-      <tbody id="recentDataBody">
-        <tr>
-          <td>Loading...</td>
-        </tr>
-      </tbody>
-    </table>
+    <!--Source code from https://www.sliderrevolution.com/resources/html-calendar/-->
+    <!-- inspired by http://colorhunt.co/c/8184 and 
+    https://dribbble.com/shots/2407357-Calendar%60 -->
+
+    <div class="container">
+        <div id="calendar" class="calendar">
+          <div class="front">
+            <div class="current-date">
+              <h1>Monday 9th</h1>
+              <h1>November 2020</h1>
+            </div>
+  
+            <div class="current-month">
+              <ul class="week-days">
+                <li>MON</li>
+                <li>TUE</li>
+                <li>WED</li>
+                <li>THU</li>
+                <li>FRI</li>
+                <li>SAT</li>
+                <li>SUN</li>
+              </ul>
+  
+              <div class="weeks">
+                <div class="first">
+                  <span>01</span>
+                  <span>02</span>
+                  <span>03</span>
+                  <span class="event">04</span>
+                  <span>05</span>
+                  <span>06</span>
+                  <span>07</span>
+                </div>
+  
+                <div class="second">
+                  <span>08</span>
+                  <span class="active">09</span>
+                  <span>10</span>
+                  <span>11</span>
+                  <span>12</span>
+                  <span>13</span>
+                  <span>14</span>
+                </div>
+  
+                <div class="third">
+                  <span>15</span>
+                  <span>16</span>
+                  <span>17</span>
+                  <span>18</span>
+                  <span>19</span>
+                  <span>20</span>
+                  <span>21</span>
+                </div>
+  
+                <div class="fourth">
+                  <span>22</span>
+                  <span>23</span>
+                  <span>24</span>
+                  <span>25</span>
+                  <span>26</span>
+                  <span>27</span>
+                  <span>28</span>
+                </div>
+  
+                <div class="fifth">
+                  <span>29</span>
+                  <span>30</span>
+                  <span class="last-month">01</span>
+                  <span class="last-month">02</span>
+                  <span class="last-month">03</span>
+                  <span class="last-month">04</span>
+                  <span class="last-month">05</span>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="back">
+            <h2 id="dateSelected">Current Date</h2>
+            <div class="info">
+              <div class="date">
+                <p class="info-date">
+                Date: <span>Jan 15th, 2016</span>
+                </p>
+                <p class="info-time">
+                  Time: <span>6:35 PM</span>
+                </p>
+              </div>
+              <div class="address">
+                <p>
+                  Address: <span>129 W 81st St, New York, NY</span>
+                </p>
+              </div>
+              <div class="observations">
+                <p>
+                  Observations: <span>Be there 15 minutes earlier</span>
+                </p>
+              </div>
+            </div>
+  
+            <div class="actions">
+              <button id="dismissButton" class="dismiss">
+                Dismiss <i class="ion-android-close"></i>
+              </button>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+
+      <p>This only supports October and November of 2020</p>
   </div>
+
+  
 
 
 
   <script src="scripts/importedScripts/jquery.min.js"></script>
   <script src="scripts/importedScripts/popper.js"></script>
   <script src="scripts/importedScripts/bootstrap-material-design.js"></script>
-  <script>$("body").bootstrapMaterialDesign();</script>
+  <script src="scripts/importedScripts/calendarJavaScript.js"></script>
+  <!-- <script>$("body").bootstrapMaterialDesign();</script> -->
   <script src="/__/firebase/7.18.0/firebase-app.js"></script>
   <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
   <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
@@ -69,6 +167,7 @@
   <script src="scripts/ourScripts/recentDataPage.js"></script>
   <script src="scripts/ourScripts/reportDataPage.js"></script>
   <script src="scripts/ourScripts/reviewsPage.js"></script>
+  <script src="scripts/ourScripts/pastReportsPage.js"></script>
   <script src="scripts/ourScripts/main.js"></script>
 </body>
 

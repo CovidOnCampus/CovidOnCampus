@@ -10,6 +10,9 @@ rhit.MonitoringPageController = class {
 		document.querySelector("#recentData").onclick = (event) => {
 			window.location.href = `/recentDataPage.html`;
 		}
+		document.querySelector("#personalPastReports").onclick = (event) => {
+			window.location.href = `/pastReportsPage.html`;
+		}
 
 		rhit.fbMonitoringPageManager.beginListening(this.updateView.bind(this));
 	}

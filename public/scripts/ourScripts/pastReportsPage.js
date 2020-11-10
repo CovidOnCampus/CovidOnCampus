@@ -1,5 +1,7 @@
 var rhit = rhit || {};
 
+// Based off of JavaScript code from https://www.sliderrevolution.com/resources/html-calendar/
+
 rhit.PastReportsPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
@@ -7,66 +9,49 @@ rhit.PastReportsPageController = class {
 		rhit.fbPastReportsPageManager.beginListening(this.updateView.bind(this));
 	}
 
-	_createTable(report1, report2, report3) {		
-		if (report1 == null) {
-			return "";
-		} else if (report2 == null) {
-			return `<tr>
-				<th scope="row">${report1.getNicerDate()}</th>
-				<td>${report1.temperature} &#176;F</td>
-				<td>${report1.getPositiveSymptoms()}</td>
-			</tr>`;
-		} else if (report3 == null) {
-			return `<tr>
-				<th scope="row">${report1.getNicerDate()}</th>
-				<td>${report1.temperature} &#176;F</td>
-				<td>${report1.getPositiveSymptoms()}</td>
-			</tr>
-			<tr>
-				<th scope="row">${report2.getNicerDate()}</th>
-				<td>${report2.temperature} &#176;F</td>
-				<td>${report2.getPositiveSymptoms()}</td>
-			</tr>`;
-		} else {
-			return `<tr>
-				<th scope="row">${report1.getNicerDate()}</th>
-				<td>${report1.temperature} &#176;F</td>
-				<td>${report1.getPositiveSymptoms()}</td>
-			</tr>
-			<tr>
-				<th scope="row">${report2.getNicerDate()}</th>
-				<td>${report2.temperature} &#176;F</td>
-				<td>${report2.getPositiveSymptoms()}</td>
-			</tr>
-			<tr>
-				<th scope="row">${report3.getNicerDate()}</th>
-				<td>${report3.temperature} &#176;F</td>
-				<td>${report3.getPositiveSymptoms()}</td>
-			</tr>`;
-		}
-	}
+	_swapSides(currentSide, desiredSide) {
+        document.querySelector("#calendar").classList.toggle("flip");
+        
+        currentSide.fadeOut(900);
+        currentSide.hide();
+        
+        desiredSide.show();
+    }
 
 	updateView() {
-		let report1 = null;
-		let report2 = null;
-		let report3 = null;
+        let dates = document.querySelectorAll(".weeks span");
 
-		for (let i = 0; i < rhit.fbRecentDataPageManager.length; i++) {
-			const report = rhit.fbRecentDataPageManager.getReportAtIndex(i);
-			console.log("User: ", report.user);
-			console.log("Me: ", rhit.fbAuthManager.uid);
-			if (report.user == rhit.fbAuthManager.uid) {
-				report3 = report2;
-				report2 = report1;
-				report1 = report;
-				console.log("Report1: ", report1);
-				console.log(report1.timestamp.toDate().toDateString());
-			}
-		}
+        for (const date of dates) {
+            date.onclick = (event) => {
+                this._swapSides($('.front'), $('.back'));
+            };
+        }
 
-		let table = this._createTable(report1, report2, report3);
+        document.querySelector("#dismissButton").onclick = (event) => {
+            this._swapSides($('.back'), $('.front'));
+        };
+        
+        
+        // let report1 = null;
+		// let report2 = null;
+		// let report3 = null;
 
-		document.querySelector("#recentDataBody").innerHTML = table;
+		// for (let i = 0; i < rhit.fbRecentDataPageManager.length; i++) {
+		// 	const report = rhit.fbRecentDataPageManager.getReportAtIndex(i);
+		// 	console.log("User: ", report.user);
+		// 	console.log("Me: ", rhit.fbAuthManager.uid);
+		// 	if (report.user == rhit.fbAuthManager.uid) {
+		// 		report3 = report2;
+		// 		report2 = report1;
+		// 		report1 = report;
+		// 		console.log("Report1: ", report1);
+		// 		console.log(report1.timestamp.toDate().toDateString());
+		// 	}
+		// }
+
+		// let table = this._createTable(report1, report2, report3);
+
+		// document.querySelector("#recentDataBody").innerHTML = table;
 	}
 };
 
