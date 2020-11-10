@@ -30,37 +30,25 @@
       </div>
     </div>
   </nav>
-  <div id="mainPage" class="container page-container">
+  <div id="pastReportsPage" class="container page-container">
 
-    <h1 id = "mainTitle">Welcome to COVID on Campus</h1>
-    <br>
-    <b id = "shortDescrip">A one-stop shop for all things COVID-related</b>
-    <br>
-    <div class = "monitoring-button">
-      <button id = "dailyMonitoring">Daily Monitoring</button>
-    </div>
-    <br>
-    <div class = "map-button">
-      <button id = "interactiveMap">Interactive Map</button>
-    </div>
-
-  </div>
-
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Choose to either login or go to map page" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-center" role="document">
-      <div class="modal-content">
-        <div class="modal-header roseColorScheme">
-          <h5 class="modal-title">Access Denied</h5>
-        </div>
-        <div class="modal-body">
-          You must be signed in to access the monitoring page.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">BACK</button>
-          <button id="submitLoginModal" type="button" class="btn" data-dismiss="modal">LOGIN</button>
-        </div>
-      </div>
-    </div>
+    <h1 id = "recentDataTitle">Recent Symptom/Temperature Data</h1>
+    <h2 id = "recentDataSubTitle">These are all of your recent statistics</h2>
+    <hr>
+    <table id="recentDataTable" class="table table-striped roseColorScheme">
+      <thead>
+        <tr>
+          <th scope="col">Time</th>
+          <th scope="col">Temperature</th>
+          <th scope="col">Symptoms</th>
+        </tr>
+      </thead>
+      <tbody id="recentDataBody">
+        <tr>
+          <td>Loading...</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 

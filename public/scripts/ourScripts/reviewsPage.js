@@ -26,7 +26,11 @@ rhit.ReviewsPageController = class {
 					document.querySelector("#inputComment").focus();
 				});
 			} else {
-				alert("You must be signed in to leave a review");
+				$("#loginModal").modal("show");
+
+				document.querySelector("#submitLoginModal").onclick = (event) => {
+					window.location.href = `/loginPage.html`;
+				};
 			};
 		}
 		document.querySelector("#submitAddReview").onclick = (event) => {
@@ -80,7 +84,7 @@ rhit.ReviewsPageController = class {
 				rhit.fbReviewsPageManager.update(reviewId, newComment, newRating);
 			};
 		} else {
-			alert("You are not the author of this review");
+			$("#invalidAuthor").modal("show");
 		}
 	};
 
@@ -92,7 +96,7 @@ rhit.ReviewsPageController = class {
 				rhit.fbReviewsPageManager.delete(reviewId);
 			};
 		} else {
-			alert("You are not the author of this review");
+			$("#invalidAuthor").modal("show");
 		}
 	}
 

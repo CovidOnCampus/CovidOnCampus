@@ -259,7 +259,8 @@ h6 {
 #addLocation .modal-content .modal-header,
 #addReview .modal-content .modal-header,
 #editReviewDialog .modal-content .modal-header,
-#deleteReviewDialog .modal-content .modal-header {
+#deleteReviewDialog .modal-content .modal-header,
+#loginModal .modal-content .modal-header {
     justify-content: center;
     padding: 10px;
     border-radius: 0px;

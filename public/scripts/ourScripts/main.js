@@ -31,6 +31,7 @@ rhit.fbReviewsPageManager = null;
 rhit.fbReportDataPageManager = null;
 rhit.fbRecentDataPageManager = null;
 rhit.reviewsPageController = null;
+rhit.fbPastReportsPageManager = null;
 
 
 //From https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
@@ -49,7 +50,16 @@ rhit.MainPageController = class {
 			window.location.href = `/mapPage.html`;
 		}
 		document.querySelector("#dailyMonitoring").onclick = (event) => {
-			window.location.href = `/monitoringPage.html`;
+			if (rhit.fbAuthManager.isSignedIn) {
+				window.location.href = `/monitoringPage.html`;
+			} else {
+				$("#loginModal").modal("show");
+
+				document.querySelector("#submitLoginModal").onclick = (event) => {
+					window.location.href = `/loginPage.html`;
+				};
+			}
+			
 		}
 		rhit.fbMainPageManager.beginListening(this.updateView.bind(this));
 	}
@@ -111,22 +121,47 @@ rhit.initializePage = function() {
 	}
 
 	if (document.querySelector("#monitoringPage")) {
-		rhit.fbMonitoringPageManager = new rhit.FbMonitoringPageManager(uid);
-		new rhit.MonitoringPageController();
+		if (!rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/`;
+		} else {
+			rhit.fbMonitoringPageManager = new rhit.FbMonitoringPageManager(uid);
+			new rhit.MonitoringPageController();
+		}
 	}
 
 	if (document.querySelector("#reportDataPage")) {
-		rhit.fbReportDataPageManager = new rhit.FbReportDataPageManager(uid);
-		new rhit.ReportDataPageController();
+		if (!rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/`;
+		} else {
+			rhit.fbReportDataPageManager = new rhit.FbReportDataPageManager(uid);
+			new rhit.ReportDataPageController();
+		}
 	}
 
 	if (document.querySelector("#recentDataPage")) {
-		rhit.fbRecentDataPageManager = new rhit.FbRecentDataPageManager(uid);
-		new rhit.RecentDataPageController();
+		if (!rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/`;
+		} else {
+			rhit.fbRecentDataPageManager = new rhit.FbRecentDataPageManager(uid);
+			new rhit.RecentDataPageController();
+		}
+	}
+
+	if (document.querySelector("#pastReportsPage")) {
+		if (!rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/`;
+		} else {
+			rhit.fbPastReportsPageManager = new rhit.FbPastReportsPageManager(uid);
+			new rhit.PastReportsPageController();
+		}
 	}
 
 	if (document.querySelector("#loginPage")) {
-		new rhit.LoginPageController();
+		if (rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/`;
+		} else {
+			new rhit.LoginPageController();
+		}
 	} 
 };
 

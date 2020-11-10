@@ -129,6 +129,39 @@
     </div>
   </div>
 
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Choose to either login or go back" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-center" role="document">
+      <div class="modal-content">
+        <div class="modal-header roseColorScheme">
+          <h5 class="modal-title">Access Denied</h5>
+        </div>
+        <div class="modal-body">
+          You must be signed in to leave a review.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">BACK</button>
+          <button id="submitLoginModal" type="button" class="btn" data-dismiss="modal">LOGIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="invalidAuthor" tabindex="-1" role="dialog" aria-labelledby="Access denied, go back" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-center" role="document">
+      <div class="modal-content">
+        <div class="modal-header roseColorScheme">
+          <h5 class="modal-title">Access Denied</h5>
+        </div>
+        <div class="modal-body">
+          You are not the author of this review.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">BACK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   </div>
   <script src="scripts/importedScripts/jquery.min.js"></script>
   <script src="scripts/importedScripts/popper.js"></script>
