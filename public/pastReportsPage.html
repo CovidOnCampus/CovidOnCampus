@@ -41,8 +41,20 @@
         <div id="calendar" class="calendar">
           <div class="front">
             <div class="current-date">
-              <h1>Monday 9th</h1>
-              <h1>November 2020</h1>
+              <div id="specificDate">
+                <h1>Monday 9th</h1>
+                <h1 class="month">November 2020</h1>
+              </div>
+              <div>
+                <select class="form-control" id="inputMonth">
+                    <option value="0" selected disabled hidden> 
+                        Choose a month 
+                    </option> 
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                </select>
+                <button id="goButton" type="button" class="btn" data-dismiss="modal">GO</button>
+              </div>
             </div>
   
             <div class="current-month">
@@ -58,13 +70,13 @@
   
               <div class="weeks">
                 <div class="first">
-                  <span>01</span>
-                  <span>02</span>
-                  <span>03</span>
-                  <span class="event">04</span>
-                  <span>05</span>
-                  <span>06</span>
-                  <span>07</span>
+                  <span class="Monday">01</span>
+                  <span class="Tuesday">02</span>
+                  <span class="Wednesday">03</span>
+                  <span class="Thursday" class="event">04</span>
+                  <span class="Friday">05</span>
+                  <span class="Saturday">06</span>
+                  <span class="Sunday">07</span>
                 </div>
   
                 <div class="second">

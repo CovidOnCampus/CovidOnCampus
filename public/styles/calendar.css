@@ -56,9 +56,9 @@ body {
   
 .current-date {
     border-bottom: 1px solid rgba(227, 231, 233, 0.753);
-    display: flex;
     justify-content: space-between;
-    padding: 30px 40px;
+    padding: 30px 40px 10px;
+    width: 100%;
 }
   
 .current-date h1 {
@@ -66,13 +66,32 @@ body {
     font-size: 1.4em;
     font-weight: 300;
 }
-  
+
+#inputMonth {
+    color: white;
+    background-color: #96030a;
+    width: 200%;
+}
+
+.current-date div {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: auto auto;
+}
+
+
+ 
+#goButton {
+    color: white;
+    background-color: #96030a;
+}
+
 .week-days {
     color: white;
     display: flex;
     justify-content: space-between;
     font-weight: 600;
-    padding: 30px 40px;
+    padding: 15px 40px 30px;
     margin: 0px;
 }
   
@@ -163,18 +182,9 @@ body {
 .info span {
     font-weight: 300;
 }
-  
-.info .date {
-    display: flex;
-    justify-content: space-between;
-}
-  
-.info .date p {
-    width: 50%;
-}
-  
-.info .address p {
-    width: 100%;
+
+.info h2 {
+    border-bottom: 0px solid rgba(227, 231, 233, 0.753);
 }
   
 .actions {

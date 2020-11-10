@@ -1,5 +1,6 @@
 var rhit = rhit || {};
 
+
 // Based off of JavaScript code from https://www.sliderrevolution.com/resources/html-calendar/
 
 rhit.PastReportsPageController = class {
@@ -7,28 +8,57 @@ rhit.PastReportsPageController = class {
 		rhit.setUpDropDown();
 		this.updateView();
 		rhit.fbPastReportsPageManager.beginListening(this.updateView.bind(this));
-	}
+    }
+    
+    _updateBack(date) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+        document.querySelector("#dateSelected").innerHTML = `${date.toLocaleString('en-us', options)}`;
 
-	_swapSides(currentSide, desiredSide) {
+        let report = rhit.fbPastReportsPageManager.getReportByDate(date);
+        if (report) {
+            document.querySelector(".info-temp span").innerHTML = `${report.temperature} &#176;F`;
+            document.querySelector(".symptoms span").innerHTML = `${report.getPositiveSymptoms()}`;
+        } else {
+            document.querySelector(".info").innerHTML = `<h2>No Report on this day</h2>`;
+        }
+    }
+
+	_frontToBack(front, back, date, update) {
+        document.querySelector("#calendar").classList.toggle("flip");
+        front.fadeOut(900);
+        front.hide();
+        
+        update(date);
+        back.show();
+    }
+
+    _backToFront(back, front) {
         document.querySelector("#calendar").classList.toggle("flip");
         
-        currentSide.fadeOut(900);
-        currentSide.hide();
+        back.fadeOut(900);
+        back.hide();
         
-        desiredSide.show();
+        front.show();
     }
 
 	updateView() {
         let dates = document.querySelectorAll(".weeks span");
+        let month = document.querySelector("#specificDate .month").innerHTML;
+        if (month.charAt(0) == 'O') {
+            month = 9;
+        } else {
+            month = 10;
+        }
 
         for (const date of dates) {
             date.onclick = (event) => {
-                this._swapSides($('.front'), $('.back'));
+                let dateValue = new Date(2020, month, date.innerHTML);
+                this._frontToBack($('.front'), $('.back'), dateValue, this._updateBack);
             };
         }
 
         document.querySelector("#dismissButton").onclick = (event) => {
-            this._swapSides($('.back'), $('.front'));
+            this._backToFront($('.back'), $('.front'));
         };
 	}
 };
@@ -103,7 +133,22 @@ rhit.FbPastReportsPageManager = class {
 
 	stopListening() {
 		this._unsubscribe();
-	}
+    }
+    
+    getReportByDate(date) {
+        let betterDate = firebase.firestore.Timestamp.fromDate(date);
+        console.log(betterDate);
+        console.log(date);
+        for (let i = 0; i < rhit.fbPastReportsPageManager.length; i++) {
+            let docSnapshot = this._documentSnapshots[i];
+            console.log("Timestamp: ", docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString());
+            console.log("Date: ", date.toDateString());
+			if (docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString() == date.toDateString()) {
+				return this.getReportAtIndex(i);
+			}
+        }
+        return null;
+    }
 
 	getReportAtIndex(index) {
 		const docSnapshot = this._documentSnapshots[index];
