@@ -30,28 +30,6 @@ rhit.PastReportsPageController = class {
         document.querySelector("#dismissButton").onclick = (event) => {
             this._swapSides($('.back'), $('.front'));
         };
-        
-        
-        // let report1 = null;
-		// let report2 = null;
-		// let report3 = null;
-
-		// for (let i = 0; i < rhit.fbRecentDataPageManager.length; i++) {
-		// 	const report = rhit.fbRecentDataPageManager.getReportAtIndex(i);
-		// 	console.log("User: ", report.user);
-		// 	console.log("Me: ", rhit.fbAuthManager.uid);
-		// 	if (report.user == rhit.fbAuthManager.uid) {
-		// 		report3 = report2;
-		// 		report2 = report1;
-		// 		report1 = report;
-		// 		console.log("Report1: ", report1);
-		// 		console.log(report1.timestamp.toDate().toDateString());
-		// 	}
-		// }
-
-		// let table = this._createTable(report1, report2, report3);
-
-		// document.querySelector("#recentDataBody").innerHTML = table;
 	}
 };
 
