@@ -16,8 +16,15 @@ rhit.PastReportsPageController = class {
 
         let report = rhit.fbPastReportsPageManager.getReportByDate(date);
         if (report) {
-            document.querySelector(".info-temp span").innerHTML = `${report.temperature} &#176;F`;
-            document.querySelector(".symptoms span").innerHTML = `${report.getPositiveSymptoms()}`;
+            document.querySelector(".info").innerHTML = `<p>
+            Temperature: <span>${report.temperature} &#176;F</span>
+            </p>
+            <p>
+                  Symptoms: <br><span>${report.getPositiveSymptoms()}</span>
+            </p>`;
+
+            // document.querySelector(".info-temp span").innerHTML = `${report.temperature} &#176;F`;
+            // document.querySelector(".symptoms span").innerHTML = `${report.getPositiveSymptoms()}`;
         } else {
             document.querySelector(".info").innerHTML = `<h2>No Report on this day</h2>`;
         }
