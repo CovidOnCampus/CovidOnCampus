@@ -22,9 +22,6 @@ rhit.PastReportsPageController = class {
             <p>
                   Symptoms: <br><span>${report.getPositiveSymptoms()}</span>
             </p>`;
-
-            // document.querySelector(".info-temp span").innerHTML = `${report.temperature} &#176;F`;
-            // document.querySelector(".symptoms span").innerHTML = `${report.getPositiveSymptoms()}`;
         } else {
             document.querySelector(".info").innerHTML = `<h2>No Report on this day</h2>`;
         }
@@ -32,7 +29,7 @@ rhit.PastReportsPageController = class {
 
 	_frontToBack(front, back, date, update) {
         document.querySelector("#calendar").classList.toggle("flip");
-        front.fadeOut(900);
+        front.fadeOut(700);
         front.hide();
         
         update(date);
@@ -42,7 +39,7 @@ rhit.PastReportsPageController = class {
     _backToFront(back, front) {
         document.querySelector("#calendar").classList.toggle("flip");
         
-        back.fadeOut(900);
+        back.fadeOut(700);
         back.hide();
         
         front.show();
@@ -51,11 +48,27 @@ rhit.PastReportsPageController = class {
 	updateView() {
         let dates = document.querySelectorAll(".weeks span");
         let month = document.querySelector("#specificDate .month").innerHTML;
+        const options = { weekday: 'long', day: '2-digit'};
+        let date = new Date(Date.now());
         if (month.charAt(0) == 'O') {
             month = 9;
+            // _setUpOctober();
         } else {
             month = 10;
+           
+            if (date.getDate() == 1 || date.getDate() == 21 || date.getDate() == 31) {
+                document.querySelector("#specificDate .day").innerHTML = date.toLocaleString('en-gb', options) + "st";
+            } else if(date.getDate() == 2 || date.getDate() == 22) {
+                document.querySelector("#specificDate .day").innerHTML = date.toLocaleString('en-gb', options) + "nd";
+            } else if(date.getDate() == 3 || date.getDate() == 23) {
+                document.querySelector("#specificDate .day").innerHTML = date.toLocaleString('en-gb', options) + "rd";
+            } else {
+                document.querySelector("#specificDate .day").innerHTML = date.toLocaleString('en-gb', options) + "th";
+            }
+            
+            // _setUpNovember();
         }
+
 
         for (const date of dates) {
             date.onclick = (event) => {
@@ -143,13 +156,8 @@ rhit.FbPastReportsPageManager = class {
     }
     
     getReportByDate(date) {
-        let betterDate = firebase.firestore.Timestamp.fromDate(date);
-        console.log(betterDate);
-        console.log(date);
         for (let i = 0; i < rhit.fbPastReportsPageManager.length; i++) {
             let docSnapshot = this._documentSnapshots[i];
-            console.log("Timestamp: ", docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString());
-            console.log("Date: ", date.toDateString());
 			if (docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString() == date.toDateString()) {
 				return this.getReportAtIndex(i);
 			}
