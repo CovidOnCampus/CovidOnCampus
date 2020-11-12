@@ -1,5 +1,10 @@
 var rhit = rhit || {};
 
+rhit.pad = function(num, size) {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+};
 
 // Based off of JavaScript code from https://www.sliderrevolution.com/resources/html-calendar/
 
@@ -7,6 +12,17 @@ rhit.PastReportsPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
 		this.updateView();
+
+		document.querySelector("#goButton").onclick = (event) => {
+			if (document.querySelector("#inputMonth").value == "October") {
+				document.querySelector("#specificDate .month").innerHTML = "October 2020";
+			} else {
+				document.querySelector("#specificDate .month").innerHTML = "November 2020"
+			}		
+			document.querySelector("#inputMonth").value = 0;
+			this.updateView();	
+		};
+
 		rhit.fbPastReportsPageManager.beginListening(this.updateView.bind(this));
     }
     
@@ -14,7 +30,8 @@ rhit.PastReportsPageController = class {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
         document.querySelector("#dateSelected").innerHTML = `${date.toLocaleString('en-us', options)}`;
 
-        let report = rhit.fbPastReportsPageManager.getReportByDate(date);
+		let report = rhit.fbPastReportsPageManager.getReportByDate(date);
+		console.log(report);
         if (report) {
             document.querySelector(".info").innerHTML = `<p>
             Temperature: <span>${report.temperature} &#176;F</span>
@@ -23,6 +40,7 @@ rhit.PastReportsPageController = class {
                   Symptoms: <br><span>${report.getPositiveSymptoms()}</span>
             </p>`;
         } else {
+			console.log("No report");
             document.querySelector(".info").innerHTML = `<h2>No Report on this day</h2>`;
         }
     }
@@ -43,16 +61,139 @@ rhit.PastReportsPageController = class {
         back.hide();
         
         front.show();
-    }
+	}
+	
+	_setUpNovember() {
+		let firstWeek = `<div class="first">`;
+		for (let i = 1; i < 8; i++) {
+			let date = new Date(2020, 10, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				firstWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				firstWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		firstWeek += `</div>`;
+
+		let secondWeek = `<div class="second">`;
+		for (let i = 8; i < 15; i++) {
+			let date = new Date(2020, 10, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				secondWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				secondWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		secondWeek += `</div>`;
+
+		let thirdWeek = `<div class="third">`;
+		for (let i = 15; i < 22; i++) {
+			let date = new Date(2020, 10, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				thirdWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				thirdWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		thirdWeek += `</div>`;
+
+		let fourthWeek = `<div class="fourth">`;
+		for (let i = 22; i < 29; i++) {
+			let date = new Date(2020, 10, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				fourthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				fourthWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		fourthWeek += `</div>`;
+
+		let fifthWeek = `<div class="fifth">`;
+		for (let i = 29; i < 31; i++) {
+			let date = new Date(2020, 10, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				fifthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				fifthWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		for (let i = 1; i < 6; i++) {
+			fifthWeek += `<span class="last-month">${rhit.pad(i, 2)}</span>`
+		}
+		fifthWeek += `</div>`;
+
+		document.querySelector(".weeks").innerHTML = firstWeek + secondWeek + thirdWeek + fourthWeek + fifthWeek;
+	}
+
+	_setUpOctober() {
+		let firstWeek = `<div class="first">`;
+		for (let i = 27; i < 31; i++) {
+			firstWeek += `<span class="last-month">${rhit.pad(i, 2)}</span>`
+		}
+		for (let i = 1; i < 4; i++) {
+			let date = new Date(2020, 9, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				firstWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				firstWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		firstWeek += `</div>`;
+
+		let secondWeek = `<div class="second">`;
+		for (let i = 4; i < 11; i++) {
+			let date = new Date(2020, 9, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				secondWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				secondWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		secondWeek += `</div>`;
+
+		let thirdWeek = `<div class="third">`;
+		for (let i = 11; i < 18; i++) {
+			let date = new Date(2020, 9, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				thirdWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				thirdWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		thirdWeek += `</div>`;
+
+		let fourthWeek = `<div class="fourth">`;
+		for (let i = 18; i < 25; i++) {
+			let date = new Date(2020, 9, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				fourthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				fourthWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		fourthWeek += `</div>`;
+
+		let fifthWeek = `<div class="fifth">`;
+		for (let i = 25; i < 32; i++) {
+			let date = new Date(2020, 9, i);
+			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+				fifthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
+			} else {
+				fifthWeek += `<span>${rhit.pad(i, 2)}</span>`
+			}
+		}
+		fifthWeek += `</div>`;
+
+		document.querySelector(".weeks").innerHTML = firstWeek + secondWeek + thirdWeek + fourthWeek + fifthWeek;
+	}
 
 	updateView() {
-        let dates = document.querySelectorAll(".weeks span");
         let month = document.querySelector("#specificDate .month").innerHTML;
         const options = { weekday: 'long', day: '2-digit'};
         let date = new Date(Date.now());
         if (month.charAt(0) == 'O') {
             month = 9;
-            // _setUpOctober();
+            this._setUpOctober();
         } else {
             month = 10;
            
@@ -66,10 +207,10 @@ rhit.PastReportsPageController = class {
                 document.querySelector("#specificDate .day").innerHTML = date.toLocaleString('en-gb', options) + "th";
             }
             
-            // _setUpNovember();
-        }
+            this._setUpNovember();
+		}
 
-
+		let dates = document.querySelectorAll(".weeks span");
         for (const date of dates) {
             date.onclick = (event) => {
                 let dateValue = new Date(2020, month, date.innerHTML);
