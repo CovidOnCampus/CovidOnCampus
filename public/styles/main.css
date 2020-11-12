@@ -276,6 +276,21 @@ h6 {
     color: white;
 }
 
+@media (min-width: 320px) {
+    #reportData, #recentData, #personalPastReports {
+        font-size: 1em;
+    }
+    #title {
+        justify-content: center;
+        text-align: center;
+        font-size: 2em;
+    }
+
+    #mainTitle {
+        font-size: 2em;
+    }
+}
+
 
 @media (min-width: 576px) {
     #loginPageTitle, #mainTitle {
