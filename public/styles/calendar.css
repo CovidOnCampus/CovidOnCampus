@@ -84,6 +84,7 @@ body {
 #goButton {
     color: white;
     background-color: #96030a;
+    margin: 0;
 }
 
 .week-days {
@@ -115,6 +116,38 @@ body {
     justify-content: space-between;
     margin-bottom: 20px;
     width: 100%;
+}
+
+@media (min-width: 320px) {
+    .weeks {
+        font-size: 1em;
+        justify-content: left;
+        padding: 0;
+    }
+
+    .week-days {
+        font-size: 1em;
+        justify-content: space-between;
+        padding: 10px 5px 0px 5px;
+    }
+
+    .current-date {
+        font-size: 1em;
+        padding: 10px 5px 10px 5px;
+    }
+
+    .day, .month {
+        text-align: center;
+        justify-content: center;
+    }
+
+    #inputMonth {
+        width: 175%;
+    }
+
+    #goButton {
+        margin: 0;
+    }
 }
   
 .last-month {
