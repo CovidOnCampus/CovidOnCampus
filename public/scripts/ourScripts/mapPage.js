@@ -17,25 +17,27 @@ rhit.MapPageController = class {
 
 		map.on("load", function() {
 			rhit.addLayers(map);
+
+			document.querySelector("#sanitizingButton").onclick = (event) => {
+				map.setLayoutProperty('sanitizingStations', 'visibility', 'visible');
+				map.setLayoutProperty('restrooms', 'visibility', 'none');
+				map.setLayoutProperty('testingDropOff', 'visibility', 'none');		
+			};
+	
+			document.querySelector("#restroomButton").onclick = (event) => {
+				map.setLayoutProperty('restrooms', 'visibility', 'visible');
+				map.setLayoutProperty('testingDropOff', 'visibility', 'none');
+				map.setLayoutProperty('sanitizingStations', 'visibility', 'none');
+			};
+	
+			document.querySelector("#dropOffButton").onclick = (event) => {
+				map.setLayoutProperty('testingDropOff', 'visibility', 'visible');
+				map.setLayoutProperty('sanitizingStations', 'visibility', 'none');
+				map.setLayoutProperty('restrooms', 'visibility', 'none');
+			};
 		});
 
-		document.querySelector("#sanitizingButton").onclick = (event) => {
-			map.setLayoutProperty('sanitizingStations', 'visibility', 'visible');
-			map.setLayoutProperty('restrooms', 'visibility', 'none');
-			map.setLayoutProperty('testingDropOff', 'visibility', 'none');		
-		};
-
-		document.querySelector("#restroomButton").onclick = (event) => {
-			map.setLayoutProperty('restrooms', 'visibility', 'visible');
-			map.setLayoutProperty('testingDropOff', 'visibility', 'none');
-			map.setLayoutProperty('sanitizingStations', 'visibility', 'none');
-		};
-
-		document.querySelector("#dropOffButton").onclick = (event) => {
-			map.setLayoutProperty('testingDropOff', 'visibility', 'visible');
-			map.setLayoutProperty('sanitizingStations', 'visibility', 'none');
-			map.setLayoutProperty('restrooms', 'visibility', 'none');
-		};
+		
 
 		document.querySelector("#fabAddLocation").onclick = (event) => {
 			if (rhit.fbAuthManager.isAdmin) {
