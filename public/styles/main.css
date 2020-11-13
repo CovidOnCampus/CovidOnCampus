@@ -66,32 +66,23 @@ body {
 }
 
 /* Monitoring Page */
-#title {
-    font-size: 4em;
+#monitoringTitle {
+    font-size: 2em;
     font-weight: bold;
     text-align: center;
 }
-.button-group > button {
-    font-size: 1.5em;
+.button-group > button, .button-group-two > button {
+    font-size: 1em;
     padding: 10px 20px;
     margin: 0 10px;
 }
-.button-group {
+.button-group, .button-group-two {
     text-align: center;
     /* border: gray solid 5px; */
     padding: 25px;
 }
-.button-group-two > button {
-    font-size: 1.5em;
-    padding: 10px 20px;
-    margin: 0 10px;
-}
-.button-group-two {
-    text-align: center;
-    /* border: gray solid 5px; */
-    padding: 25px;
-}
-#reportData {
+
+#reportData, #recentData {
     background-color: #800000;
     color: white;
     text-align: center;
@@ -101,16 +92,7 @@ body {
     width: 10em;
     height: 5em;
 }
-#recentData {
-    background-color: #800000;
-    color: white;
-    text-align: center;
-    border-radius: 4px;
-    margin: 10px 0;
-    padding: 1em 1em;
-    width: 10em;
-    height: 5em;
-}
+
 #personalPastReports {
     background-color: #800000;
     color: white;
@@ -260,7 +242,9 @@ h6 {
 #addReview .modal-content .modal-header,
 #editReviewDialog .modal-content .modal-header,
 #deleteReviewDialog .modal-content .modal-header,
-#loginModal .modal-content .modal-header {
+#loginModal .modal-content .modal-header,
+#invalidUser .modal-content .modal-header,
+#deleteLocationDialog .modal-content .modal-header {
     justify-content: center;
     padding: 10px;
     border-radius: 0px;
@@ -274,21 +258,6 @@ h6 {
 .roseColorScheme {
     background: #800000;
     color: white;
-}
-
-@media (min-width: 320px) {
-    #reportData, #recentData, #personalPastReports {
-        font-size: 1em;
-    }
-    #title {
-        justify-content: center;
-        text-align: center;
-        font-size: 2em;
-    }
-
-    #mainTitle {
-        font-size: 2em;
-    }
 }
 
 
@@ -350,7 +319,6 @@ h6 {
         padding: .4em .3em;
     }
 
-
     #locationsRatingList .card-body {
         grid-template-columns: auto 175px 40px;
     }
@@ -359,20 +327,14 @@ h6 {
         font-size: 1.25em;
         margin-right: 10px;
     }
-}
 
-@media (min-width: 992px) {
-    /* #map {
-        width: 75vw;
-        height: 60vh;
+    #monitoringTitle {
+        font-size: 4em;
     }
 
-    #mapTitle {
-        font-size: 2em;
+    .button-group > button, .button-group-two > button {
+        font-size: 1.5em;
     }
-    
-    #selectingButtons button {
-        margin: 5px 5px 15px;
-    } */
 }
+
 

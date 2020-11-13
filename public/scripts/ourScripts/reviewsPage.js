@@ -26,9 +26,9 @@ rhit.ReviewsPageController = class {
 					document.querySelector("#inputComment").focus();
 				});
 			} else {
-				$("#loginModal").modal("show");
+				$("#loginReviewModal").modal("show");
 
-				document.querySelector("#submitLoginModal").onclick = (event) => {
+				document.querySelector("#submitLoginReviewModal").onclick = (event) => {
 					window.location.href = `/loginPage.html`;
 				};
 			};

@@ -3,6 +3,8 @@
 p {
     text-align: center;
     margin-top: 10px;
+    margin-bottom: 0px;
+    word-wrap: normal;
 }
 
 * {
@@ -41,11 +43,11 @@ body {
     background: #800000;
     border-radius: 4px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, .3);
-    height: 530px;
+    height: 400px;
     perspective: 1000;
     transition: .9s;
     transform-style: preserve-3d;
-    width: 100%;
+    width: 290px;
     margin-top: 5px;
 }
   
@@ -57,20 +59,20 @@ body {
 .current-date {
     border-bottom: 1px solid rgba(227, 231, 233, 0.753);
     justify-content: space-between;
-    padding: 30px 40px 10px;
+    padding: 20px 15px 20px;
     width: 100%;
 }
   
 .current-date h1 {
     color: white;
-    font-size: 1.4em;
-    font-weight: 300;
+    font-size: 1.1em;
+    font-weight: 250;
 }
 
 #inputMonth {
     color: white;
     background-color: #96030a;
-    width: 200%;
+    width: 120%;
 }
 
 .current-date div {
@@ -78,8 +80,6 @@ body {
     justify-content: space-between;
     grid-template-columns: auto auto;
 }
-
-
  
 #goButton {
     color: white;
@@ -91,8 +91,8 @@ body {
     color: white;
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
-    padding: 15px 40px 30px;
+    font-weight: 400;
+    padding: 15px 15px 0px;
     margin: 0px;
 }
   
@@ -106,48 +106,16 @@ body {
     color: #fff;
     display: flex;
     flex-direction: column;
-    padding: 0 40px;
+    padding: 0 10px;
 }
   
 .weeks div {
     display: flex;
-    font-size: 1.2em;
-    font-weight: 300;
+    font-size: 1em;
+    font-weight: 200;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     width: 100%;
-}
-
-@media (min-width: 320px) {
-    .weeks {
-        font-size: 1em;
-        justify-content: left;
-        padding: 0;
-    }
-
-    .week-days {
-        font-size: 1em;
-        justify-content: space-between;
-        padding: 10px 5px 0px 5px;
-    }
-
-    .current-date {
-        font-size: 1em;
-        padding: 10px 5px 10px 5px;
-    }
-
-    .day, .month {
-        text-align: center;
-        justify-content: center;
-    }
-
-    #inputMonth {
-        width: 175%;
-    }
-
-    #goButton {
-        margin: 0;
-    }
 }
   
 .last-month {
@@ -174,7 +142,7 @@ body {
   
 .event:after {
     content: '•';
-    color: #c2242c;
+    color: #e28e92;
     font-size: 1.4em;
     position: absolute;
     right: -4px;
@@ -260,4 +228,81 @@ body {
   
 .front, .back {
     backface-visibility: hidden;
+}
+
+
+
+@media (min-width: 576px) {
+    .calendar {
+        height: 450px;
+        width: 420px;
+    }
+    
+    .weeks div {
+        font-size: 1.2em;
+        font-weight: 300;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .weeks {
+        padding: 0 20px;
+    }
+
+    .week-days {
+        font-weight: 600;
+        padding: 15px 25px 0px;
+        margin: 0px;
+    }
+
+    .current-date h1 {
+        font-size: 1.3em;
+        font-weight: 300;
+    }
+
+    .current-date {
+        padding: 30px 25px 20px;
+    }
+
+    #inputMonth {
+        width: 175%;
+    }
+}
+
+
+@media (min-width: 768px) {    
+    .calendar {
+        height: 490px;
+        width: 475px;
+    }
+    
+    .weeks div {
+        font-size: 1.4em;
+        font-weight: 300;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .weeks {
+        padding: 0 20px;
+    }
+
+    .week-days {
+        font-weight: 600;
+        padding: 15px 25px 0px;
+        margin: 0px;
+    }
+
+    .current-date h1 {
+        font-size: 1.4em;
+        font-weight: 300;
+    }
+
+    .current-date {
+        padding: 30px 25px 20px;
+    }
+
+    #inputMonth {
+        width: 175%;
+    }
 }

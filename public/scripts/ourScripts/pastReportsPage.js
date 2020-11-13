@@ -11,6 +11,7 @@ rhit.pad = function(num, size) {
 rhit.PastReportsPageController = class {
 	constructor(uid) {
 		rhit.setUpDropDown();
+		$('.back').hide();
 		this.updateView();
 
 		document.querySelector("#goButton").onclick = (event) => {

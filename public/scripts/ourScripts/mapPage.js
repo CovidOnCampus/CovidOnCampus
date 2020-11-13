@@ -37,6 +37,18 @@ rhit.MapPageController = class {
 			map.setLayoutProperty('restrooms', 'visibility', 'none');
 		};
 
+		document.querySelector("#fabAddLocation").onclick = (event) => {
+			if (rhit.fbAuthManager.isAdmin) {
+				$("#addLocation").modal("show");
+		
+				$('#addLocation').on('shown.bs.modal', (event) => {
+					document.querySelector("#inputLocation").focus();
+				});
+			} else {
+				$("#invalidUser").modal("show");
+			}
+		}
+
 		document.querySelector("#submitAddLocation").onclick = (event) => {
 			const location = document.querySelector("#inputLocation").value;
 			const building = document.querySelector(".modal-title").innerHTML;
@@ -94,7 +106,11 @@ rhit.MapPageController = class {
 			if (location.type == type && location.building == building) {
 				const newCard = createLocationCard(location);
 				newCard.querySelector(".card-trash").onclick = (event) => {
-					deleteLocation(location.id);
+					if (rhit.fbAuthManager.isAdmin) {
+						deleteLocation(location.id);
+					} else {
+						$("#invalidUser").modal("show");
+					};
 				};
 				newCard.querySelector(".card-title").onclick = (event) => {
 					window.location.href = `/reviewsPage.html?location=${location.id}`;

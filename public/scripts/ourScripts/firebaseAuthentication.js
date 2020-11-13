@@ -42,6 +42,14 @@ rhit.FbAuthManager = class {
 		return !!this._user;
 	}
 
+	get isAdmin() {
+		if (!this._user) {
+			return false;
+		} else {
+			return this._user.uid == "jurgenkr" || this._user.uid == "chaplim1" || this._user.uid == "yoder1";
+		}
+	}
+
 	get uid() {
 		return this._user.uid;
 	}

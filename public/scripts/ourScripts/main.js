@@ -173,7 +173,15 @@ rhit.setUpDropDown = function() {
 		window.location.href = `/mapPage.html`;
 	}
 	document.querySelector(".monitoringPageBtn").onclick = (event) => {
-		window.location.href = `/monitoringPage.html`;
+		if (rhit.fbAuthManager.isSignedIn) {
+			window.location.href = `/monitoringPage.html`;
+		} else {
+			$("#loginModal").modal("show");
+
+			document.querySelector("#submitLoginModal").onclick = (event) => {
+				window.location.href = `/loginPage.html`;
+			};
+		}
 	}
 	if (rhit.fbAuthManager.isSignedIn) {
 		document.querySelector(".signOutBtn").onclick = (event) => {
