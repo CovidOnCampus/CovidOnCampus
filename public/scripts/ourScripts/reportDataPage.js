@@ -20,7 +20,9 @@ rhit.ReportDataPageController = class {
 
 		//let ratingSelection = document.querySelector("#inputRating");
 		document.querySelector("#cancelForm").onclick = (event) => {
+			let ratingSelection = document.querySelector(".form-control");
 			ratingSelection.selectedIndex = 0;
+			window.location.href = `/monitoringPage.html`;
 		}
 
 		document.querySelector("#reportDataSubmitButton").onclick = (event) => {

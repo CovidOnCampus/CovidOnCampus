@@ -243,6 +243,7 @@ h6 {
 #editReviewDialog .modal-content .modal-header,
 #deleteReviewDialog .modal-content .modal-header,
 #loginModal .modal-content .modal-header,
+#loginReviewModal .modal-content .modal-header,
 #invalidUser .modal-content .modal-header,
 #deleteLocationDialog .modal-content .modal-header {
     justify-content: center;
