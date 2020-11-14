@@ -206,7 +206,7 @@ rhit.FbMapPageManager = class {
 	}
 
 	beginListening(changeListener) {
-		let query = this._ref.orderBy(rhit.FB_KEY_RATING).limit(50);
+		let query = this._ref.orderBy(rhit.FB_KEY_RATING, "desc").limit(50);
 
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;
