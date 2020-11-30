@@ -47,6 +47,7 @@ rhit.MapPageController = class {
 					document.querySelector("#inputLocation").focus();
 				});
 			} else {
+				$("#locationsWithRatings").modal("hide");
 				$("#invalidUser").modal("show");
 			}
 		}

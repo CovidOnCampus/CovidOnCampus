@@ -31,9 +31,9 @@ rhit.PastReportsPageController = class {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
         document.querySelector("#dateSelected").innerHTML = `${date.toLocaleString('en-us', options)}`;
 
-		let report = rhit.fbPastReportsPageManager.getReportByDate(date);
+		let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
 		console.log(report);
-        if (report) {
+        if (report && rhit.fbAuthManager.uid == report.user) {
             document.querySelector(".info").innerHTML = `<p>
             Temperature: <span>${report.temperature} &#176;F</span>
             </p>
@@ -68,7 +68,8 @@ rhit.PastReportsPageController = class {
 		let firstWeek = `<div class="first">`;
 		for (let i = 1; i < 8; i++) {
 			let date = new Date(2020, 10, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				firstWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				firstWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -79,7 +80,8 @@ rhit.PastReportsPageController = class {
 		let secondWeek = `<div class="second">`;
 		for (let i = 8; i < 15; i++) {
 			let date = new Date(2020, 10, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				secondWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				secondWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -90,7 +92,8 @@ rhit.PastReportsPageController = class {
 		let thirdWeek = `<div class="third">`;
 		for (let i = 15; i < 22; i++) {
 			let date = new Date(2020, 10, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				thirdWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				thirdWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -101,7 +104,8 @@ rhit.PastReportsPageController = class {
 		let fourthWeek = `<div class="fourth">`;
 		for (let i = 22; i < 29; i++) {
 			let date = new Date(2020, 10, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				fourthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				fourthWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -112,7 +116,8 @@ rhit.PastReportsPageController = class {
 		let fifthWeek = `<div class="fifth">`;
 		for (let i = 29; i < 31; i++) {
 			let date = new Date(2020, 10, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				fifthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				fifthWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -133,7 +138,8 @@ rhit.PastReportsPageController = class {
 		}
 		for (let i = 1; i < 4; i++) {
 			let date = new Date(2020, 9, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				firstWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				firstWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -144,7 +150,8 @@ rhit.PastReportsPageController = class {
 		let secondWeek = `<div class="second">`;
 		for (let i = 4; i < 11; i++) {
 			let date = new Date(2020, 9, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				secondWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				secondWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -155,7 +162,8 @@ rhit.PastReportsPageController = class {
 		let thirdWeek = `<div class="third">`;
 		for (let i = 11; i < 18; i++) {
 			let date = new Date(2020, 9, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				thirdWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				thirdWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -166,7 +174,8 @@ rhit.PastReportsPageController = class {
 		let fourthWeek = `<div class="fourth">`;
 		for (let i = 18; i < 25; i++) {
 			let date = new Date(2020, 9, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				fourthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				fourthWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -177,7 +186,8 @@ rhit.PastReportsPageController = class {
 		let fifthWeek = `<div class="fifth">`;
 		for (let i = 25; i < 32; i++) {
 			let date = new Date(2020, 9, i);
-			if (rhit.fbPastReportsPageManager.getReportByDate(date)) {
+			let report = rhit.fbPastReportsPageManager.getReportByDateAndUser(date);
+			if (report && report.user == rhit.fbAuthManager.uid) {
 				fifthWeek += `<span class="event">${rhit.pad(i, 2)}</span>`;
 			} else {
 				fifthWeek += `<span>${rhit.pad(i, 2)}</span>`
@@ -301,6 +311,17 @@ rhit.FbPastReportsPageManager = class {
         for (let i = 0; i < rhit.fbPastReportsPageManager.length; i++) {
             let docSnapshot = this._documentSnapshots[i];
 			if (docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString() == date.toDateString()) {
+				return this.getReportAtIndex(i);
+			}
+        }
+        return null;
+	}
+	
+	getReportByDateAndUser(date) {
+		for (let i = 0; i < rhit.fbPastReportsPageManager.length; i++) {
+            let docSnapshot = this._documentSnapshots[i];
+			if (docSnapshot.get(rhit.FB_KEY_TIMESTAMP).toDate().toDateString() == date.toDateString()
+			     && rhit.fbAuthManager.uid == docSnapshot.get(rhit.FB_KEY_USER)) {
 				return this.getReportAtIndex(i);
 			}
         }
